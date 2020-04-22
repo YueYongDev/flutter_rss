@@ -1,18 +1,20 @@
-import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_rss/utils/app_provider.dart';
+import 'package:flutter_rss/utils/event_bus.dart';
 import 'package:flutter_rss/utils/sql_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'page/home/home_screen.dart';
 
+var bus = new EventBus();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final provider = new Provider();
+  final provider = new DBProvider();
   await provider.init();
 
-  /// 等待Sp初始化完成。
-  await SpUtil.getInstance();
   runApp(MyApp());
 }
 
@@ -22,6 +24,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Color _themeColor;
+
   @override
   void initState() {
     super.initState();
@@ -36,13 +40,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterEasyLoading(
-        child: MaterialApp(
-      title: 'Rss',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [ChangeNotifierProvider.value(value: AppInfoProvider())],
+      child: Consumer<AppInfoProvider>(
+        builder: (context, appInfo, _) {
+          String colorKey = appInfo.themeColor;
+          if (themeColorMap[colorKey] != null) {
+            _themeColor = themeColorMap[colorKey];
+          }
+
+          return FlutterEasyLoading(
+              child: MaterialApp(
+            title: 'Rss',
+            theme: ThemeData.light().copyWith(
+                primaryColor: _themeColor,
+                accentColor: _themeColor,
+                indicatorColor: Colors.white),
+            home: HomePage(),
+          ));
+        },
       ),
-      home: HomePage(),
-    ));
+    );
   }
 }

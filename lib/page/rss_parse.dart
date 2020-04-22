@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rss/model/Rss.dart';
+import 'package:flutter_rss/main.dart';
+import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/services/rss_service.dart';
 import 'package:flutter_rss/widgets/browser.dart';
-import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class RssParse extends StatefulWidget {
@@ -77,11 +77,11 @@ class _RssParseState extends State<RssParse> {
     rss.url = this.widget.rss.url;
     if (feed.runtimeType.toString() == 'AtomFeed') {
       rss.updateTime = feed.updated;
-      rss.logo = feed.logo;
+      rss.logo = feed.logo == null ? '' : feed.logo;
       rss.type = 'atom';
     } else if (feed.runtimeType.toString() == 'RssFeed') {
       rss.updateTime = feed.lastBuildDate;
-      rss.logo = feed.image;
+      rss.logo = feed.image == null ? '' : feed.image.url;
       rss.type = 'rss';
     }
     DBServices.insertRss(rss);
@@ -104,6 +104,7 @@ class _RssParseState extends State<RssParse> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            bus.emit("refresh");
             Navigator.pop(context, true);
           },
         ),
@@ -158,13 +159,11 @@ class _RssParseState extends State<RssParse> {
           String author = '';
           String content = '';
           if (type == 'RssItem') {
-            debugPrint(item.pubDate);
             date = (item.pubDate == null) ? '' : item.pubDate;
             url = item.link;
             content = item.description;
             author = (item.author == null) ? '' : item.author;
           } else if (type == 'AtomItem') {
-            debugPrint(item.published);
             date = (item.published == null) ? '' : item.published;
             url = item.links[0].href;
             content = item.content;

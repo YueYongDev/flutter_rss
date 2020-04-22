@@ -17,7 +17,7 @@ class SqlUtil extends BaseModel {
 
   SqlUtil.setTable(String name)
       : tableName = name,
-        super(Provider.db);
+        super(DBProvider.db);
 
   //查询该表中的所有数据
   Future<List> get() async {

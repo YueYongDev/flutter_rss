@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_rss/model/Rss.dart';
+import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/utils/sql_util.dart';
 
 final String dbRss = 'rss.db';

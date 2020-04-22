@@ -1,14 +1,16 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_rss/common/url_string.dart';
-import 'package:flutter_rss/model/Rss.dart';
+import 'package:flutter_rss/common/constant.dart';
+import 'package:flutter_rss/main.dart';
+import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/page/rss_parse.dart';
 import 'package:flutter_rss/services/db_services.dart';
-import 'package:flutter_rss/widgets/browser.dart';
+import 'package:flutter_rss/utils/app_provider.dart';
+import 'package:flutter_rss/widgets/add_rss_dialog.dart';
+import 'package:flutter_rss/widgets/my_drawer.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -25,8 +27,6 @@ class _HomePageState extends State<HomePage> {
   // Rss订阅源
   List rssSource = [];
 
-  String rss = "";
-
   Future future;
 
   @override
@@ -37,6 +37,17 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initAsync() async {
     await _getRssData();
+    await SpUtil.getInstance();
+
+    String colorKey =
+        SpUtil.getString(Constant.keyThemeColor, defValue: 'blue');
+    // 设置初始化主题颜色
+    Provider.of<AppInfoProvider>(context, listen: false).setTheme(colorKey);
+
+    // 监听首页的刷新事件
+    bus.on("refresh", (arg) {
+      refresh();
+    });
   }
 
   _getRssData() async {
@@ -53,116 +64,6 @@ class _HomePageState extends State<HomePage> {
     await _getRssData();
   }
 
-  // 显示添加订阅源对话框
-  showAddDialog() {
-    TextEditingController _controller = TextEditingController();
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('添加订阅源'),
-            content: Container(
-              height: 90,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      new GestureDetector(
-                        child: Text(
-                          "粘贴",
-                          style:
-                              new TextStyle(fontSize: 12, color: Colors.blue),
-                        ),
-                        onTap: () async {
-                          ClipboardData data =
-                              await Clipboard.getData(Clipboard.kTextPlain);
-                          if (data != null) {
-                            setState(() {
-                              _controller.text = data.text;
-                              this.rss = data.text;
-                            });
-                          }
-                        },
-                      ),
-                      new GestureDetector(
-                          child: Text("清空",
-                              style: new TextStyle(
-                                  fontSize: 12, color: Colors.green)),
-                          onTap: () {
-                            setState(() {
-                              _controller.text = '';
-                              this.rss = '';
-                            });
-                          }),
-                      // todo 之后把rss推荐这里安排一下
-                      new GestureDetector(
-                        child: Text("RSS 推荐",
-                            style: new TextStyle(
-                                fontSize: 12, color: Colors.orange)),
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return Browser(
-                                title: "MyRSSHub", url: Urls.myrsshub);
-                          }));
-                        },
-                      ),
-                      new GestureDetector(
-                        child: Text("RSS HUB",
-                            style: new TextStyle(
-                                fontSize: 12, color: Colors.orange)),
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return Browser(title: "RSSHub", url: Urls.rsshub);
-                          }));
-                        },
-                      )
-                    ],
-                  ),
-                  TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                        labelText: '订阅源地址',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onChanged: (val) {
-                      debugPrint(val);
-                      this.rss = val;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('取消'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  if (RegexUtil.isURL(rss)) {
-                    Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) =>
-                                    new RssParse(rss: new Rss(url: rss))))
-                        .then((val) => val ? _getRssData() : null);
-                  } else {
-                    EasyLoading.showError('不合法的链接');
-                  }
-                },
-                child: Text('下一步'),
-              ),
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     this.context = context;
@@ -171,7 +72,7 @@ class _HomePageState extends State<HomePage> {
     final Orientation orientation = MediaQuery.of(context).orientation;
 
     return new Scaffold(
-        drawer: buildDrawer(context),
+        drawer: MyDrawer(),
         appBar: buildAppBar(),
         floatingActionButton: buildFloatingActionButton(),
         body: new RefreshIndicator(
@@ -188,12 +89,12 @@ class _HomePageState extends State<HomePage> {
       return buildHomePageWhenNoRss();
     else
       return Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
         child: GridView.count(
-          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+          crossAxisCount: orientation == Orientation.portrait ? 3 : 4,
           childAspectRatio: 1.0,
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
           children: List.generate(rssSource.length, (index) {
             return buildRssItem(index);
           }),
@@ -223,62 +124,81 @@ class _HomePageState extends State<HomePage> {
   // 首页的每个 item 表示一个 Rss 信息
   Widget buildRssItem(int index) {
     Rss rss = rssSource[index];
-    return GestureDetector(
-      child: Card(
-        child: Container(
-          alignment: Alignment.center,
-          color: Colors.green[100 * (index % 9)],
-          child: Text(rss.title),
+    return Column(
+      children: [
+        GestureDetector(
+          child: Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: new Border.all(color: Color(0xFFFF0000), width: 0.5),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+//                image: DecorationImage(
+//                    image: NetworkImage(this.cover), fit: BoxFit.cover),
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new RssParse(rss: rss)),
+            );
+          },
+          // todo 长按从底部弹出更新或删除选项
+          onLongPress: () {
+            showCupertinoModalPopup<int>(
+                context: context,
+                builder: (cxt) {
+                  var dialog = CupertinoActionSheet(
+                    title: Text("整理"),
+                    cancelButton: CupertinoActionSheetAction(
+                        onPressed: () {
+                          Navigator.pop(cxt, 1);
+                        },
+                        child: Text("Cancel")),
+                    actions: <Widget>[
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(cxt, 2);
+                          },
+                          child: Text('修改')),
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(cxt, 3);
+                            DBServices.delete(rss.id);
+                            _getRssData();
+                          },
+                          child: Text('删除')),
+                    ],
+                  );
+                  return dialog;
+                });
+          },
         ),
-      ),
-      onTap: () {
-        Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new RssParse(rss: rss)),
-        );
-      },
-      // todo 长按从底部弹出更新或删除选项
-      onLongPress: () {
-        showCupertinoModalPopup<int>(
-            context: context,
-            builder: (cxt) {
-              var dialog = CupertinoActionSheet(
-                title: Text("整理"),
-                cancelButton: CupertinoActionSheetAction(
-                    onPressed: () {}, child: Text("Cancel")),
-                actions: <Widget>[
-                  CupertinoActionSheetAction(
-                      onPressed: () {
-                        Navigator.pop(cxt, 2);
-                      },
-                      child: Text('修改')),
-                  CupertinoActionSheetAction(
-                      onPressed: () {
-                        Navigator.pop(cxt, 3);
-                        DBServices.delete(rss.id);
-                        _getRssData();
-                      },
-                      child: Text('删除')),
-                ],
-              );
-              return dialog;
-            });
-      },
+        SizedBox(height: 10),
+        Text(
+          rss.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        )
+      ],
     );
   }
 
   // 右下角添加按钮
   Widget buildFloatingActionButton() {
     return new FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: Icon(Icons.add, color: Colors.purple),
+//        backgroundColor: Colors.white,
+        child: Icon(Icons.add),
         onPressed: () {
           // 首页右下角，添加订阅源功能
-          showAddDialog();
+          showDialog(context: context, builder: (context) => AddRssDialog());
         });
   }
 
-  // 当本地没有rss订阅源时，显示该界面
+// 当本地没有rss订阅源时，显示该界面
   Widget buildHomePageWhenNoRss() {
     return new Container(
       width: double.infinity,

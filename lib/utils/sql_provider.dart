@@ -2,7 +2,7 @@ import 'package:flutter_rss/common/sql_table_data.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class Provider {
+class DBProvider {
   static Database db;
 
   // 获取数据库中所有的表
@@ -45,6 +45,7 @@ class Provider {
     }
 
     bool tableIsRight = await this.checkTableIsRight();
+//    bool tableIsRight = false;
 
     if (!tableIsRight) {
       // 关闭上面打开的db，否则无法执行open
