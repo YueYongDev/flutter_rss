@@ -104,6 +104,7 @@ class _RssParseState extends State<RssParse> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            // 通过eventBus通知主页刷新
             bus.emit("refresh");
             Navigator.pop(context, true);
           },

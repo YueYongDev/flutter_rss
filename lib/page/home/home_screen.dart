@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/constant.dart';
 import 'package:flutter_rss/main.dart';
-import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/page/home/home_widget.dart';
-import 'package:flutter_rss/page/rss_parse.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/add_rss_dialog.dart';
@@ -86,17 +84,17 @@ class _HomePageState extends State<HomePage> {
   // 手机页面
   Widget gridViewForPhone(Orientation orientation) {
     if (rssSource.length == 0)
-      return buildHomePageWhenNoRss();
+      return _buildHomePageWhenNoRss();
     else
       return Padding(
         padding: EdgeInsets.only(top: 25, left: 10, right: 10),
         child: GridView.count(
-          crossAxisCount: orientation == Orientation.portrait ? 3 : 4,
+          crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
           childAspectRatio: 1.0,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
           children: List.generate(rssSource.length, (index) {
-            return buildRssItem(index);
+            return buildRssItem(context, rssSource, index);
           }),
         ),
       );
@@ -105,86 +103,20 @@ class _HomePageState extends State<HomePage> {
   // 平板页面
   Widget gridViewForTablet(Orientation orientation) {
     if (rssSource.length == 0)
-      return buildHomePageWhenNoRss();
+      return _buildHomePageWhenNoRss();
     else
       return Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.only(top: 25, left: 10, right: 10),
         child: GridView.count(
           crossAxisCount: orientation == Orientation.portrait ? 4 : 6,
           childAspectRatio: 1.0,
           mainAxisSpacing: 4.0,
           crossAxisSpacing: 4.0,
           children: List.generate(rssSource.length, (index) {
-            return buildRssItem(index);
+            return buildRssItem(context, rssSource, index);
           }),
         ),
       );
-  }
-
-  // 首页的每个 item 表示一个 Rss 信息
-  Widget buildRssItem(int index) {
-    Rss rss = rssSource[index];
-    return Column(
-      children: [
-        GestureDetector(
-          child: Container(
-            width: 50,
-            height: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: new Border.all(color: Color(0xFFFF0000), width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-//                image: DecorationImage(
-//                    image: NetworkImage(this.cover), fit: BoxFit.cover),
-            ),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new RssParse(rss: rss)),
-            );
-          },
-          // todo 长按从底部弹出更新或删除选项
-          onLongPress: () {
-            showCupertinoModalPopup<int>(
-                context: context,
-                builder: (cxt) {
-                  var dialog = CupertinoActionSheet(
-                    title: Text("整理"),
-                    cancelButton: CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.pop(cxt, 1);
-                        },
-                        child: Text("Cancel")),
-                    actions: <Widget>[
-                      CupertinoActionSheetAction(
-                          onPressed: () {
-                            Navigator.pop(cxt, 2);
-                          },
-                          child: Text('修改')),
-                      CupertinoActionSheetAction(
-                          onPressed: () {
-                            Navigator.pop(cxt, 3);
-                            DBServices.delete(rss.id);
-                            _getRssData();
-                          },
-                          child: Text('删除')),
-                    ],
-                  );
-                  return dialog;
-                });
-          },
-        ),
-        SizedBox(height: 10),
-        Text(
-          rss.title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-        )
-      ],
-    );
   }
 
   // 右下角添加按钮
@@ -199,7 +131,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 // 当本地没有rss订阅源时，显示该界面
-  Widget buildHomePageWhenNoRss() {
+  Widget _buildHomePageWhenNoRss() {
     return new Container(
       width: double.infinity,
       height: double.infinity,
