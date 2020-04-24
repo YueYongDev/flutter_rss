@@ -6,24 +6,61 @@ import 'package:flutter_rss/services/db_services.dart';
 
 import '../rss_parse.dart';
 
-// AppBar
-Widget buildAppBar() {
-  return new AppBar(
-    elevation: 0,
-    centerTitle: true,
-    title: new Text("Rss阅读器"),
-    leading: Builder(
-      builder: (BuildContext context) {
-        return IconButton(
-          icon: const Icon(
-            Icons.more_horiz,
-          ),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        );
-      },
-    ),
-  );
+const appBarDesktopHeight = 158.0;
+
+class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const AdaptiveAppBar({
+    Key key,
+    this.isDesktop = false,
+  }) : super(key: key);
+
+  final bool isDesktop;
+
+  @override
+  Size get preferredSize => isDesktop
+      ? const Size.fromHeight(appBarDesktopHeight)
+      : const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    return AppBar(
+      automaticallyImplyLeading: !isDesktop,
+      title: isDesktop ? null : Text("标题"),
+      bottom: isDesktop
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(26),
+              child: Container(
+                alignment: AlignmentDirectional.centerStart,
+                margin: const EdgeInsetsDirectional.fromSTEB(72, 0, 0, 22),
+                child: Text(
+                  "Rss阅读器",
+                  style: themeData.textTheme.headline6.copyWith(
+                    color: themeData.colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+            )
+          : null,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.share),
+          tooltip: "分享",
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.favorite),
+          tooltip: "收藏",
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.search),
+          tooltip: "搜索",
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
 }
 
 // 首页的每个 item 表示一个 Rss 信息
@@ -42,6 +79,7 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
     Colors.black
   ];
   Rss rss = rssSource[index];
+
   return Column(
     children: [
       GestureDetector(

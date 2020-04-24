@@ -52,9 +52,9 @@ class _MyAppState extends State<MyApp> {
           return FlutterEasyLoading(
               child: MaterialApp(
             title: 'Rss',
-            theme: ThemeData.light().copyWith(
+            theme: ThemeData(
                 primaryColor: _themeColor,
-                accentColor: _themeColor,
+                floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: _themeColor),
                 indicatorColor: Colors.white),
             home: HomePage(),
           ));

@@ -5,6 +5,7 @@ import 'package:flutter_rss/common/constant.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
+import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/add_rss_dialog.dart';
 import 'package:flutter_rss/widgets/my_drawer.dart';
@@ -20,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var isDesktop;
+
   BuildContext context;
 
   // Rss订阅源
@@ -27,9 +30,12 @@ class _HomePageState extends State<HomePage> {
 
   Future future;
 
+  String colorKey = '';
+
   @override
   void initState() {
     super.initState();
+
     _initAsync();
   }
 
@@ -37,8 +43,7 @@ class _HomePageState extends State<HomePage> {
     await _getRssData();
     await SpUtil.getInstance();
 
-    String colorKey =
-        SpUtil.getString(Constant.keyThemeColor, defValue: 'blue');
+    colorKey = SpUtil.getString(Constant.keyThemeColor, defValue: 'blue');
     // 设置初始化主题颜色
     Provider.of<AppInfoProvider>(context, listen: false).setTheme(colorKey);
 
@@ -64,21 +69,43 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    isDesktop = isDisplayDesktop(context);
     this.context = context;
     final double shortestSide = MediaQuery.of(context).size.shortestSide;
     final bool useMobileLayout = shortestSide < 600.0;
     final Orientation orientation = MediaQuery.of(context).orientation;
-
-    return new Scaffold(
-        drawer: MyDrawer(),
-        appBar: buildAppBar(),
-        floatingActionButton: buildFloatingActionButton(),
-        body: new RefreshIndicator(
-          onRefresh: refresh,
-          child: useMobileLayout
-              ? gridViewForPhone(orientation)
-              : gridViewForTablet(orientation),
-        ));
+    if (isDesktop) {
+      return Row(
+        children: [
+          MyDrawer(),
+          const VerticalDivider(width: 1),
+          Expanded(
+              child: new Scaffold(
+                  drawer: MyDrawer(),
+                  appBar: const AdaptiveAppBar(
+                    isDesktop: true,
+                  ),
+                  floatingActionButton: buildFloatingActionButton(),
+                  body: new RefreshIndicator(
+                    onRefresh: refresh,
+                    child: useMobileLayout
+                        ? gridViewForPhone(orientation)
+                        : gridViewForTablet(orientation),
+                  )))
+        ],
+      );
+    } else {
+      return new Scaffold(
+          drawer: MyDrawer(),
+          appBar: const AdaptiveAppBar(),
+          floatingActionButton: buildFloatingActionButton(),
+          body: new RefreshIndicator(
+            onRefresh: refresh,
+            child: useMobileLayout
+                ? gridViewForPhone(orientation)
+                : gridViewForTablet(orientation),
+          ));
+    }
   }
 
   // 手机页面
@@ -108,7 +135,7 @@ class _HomePageState extends State<HomePage> {
       return Padding(
         padding: EdgeInsets.only(top: 25, left: 10, right: 10),
         child: GridView.count(
-          crossAxisCount: orientation == Orientation.portrait ? 4 : 6,
+          crossAxisCount: orientation == Orientation.portrait ? 4 : 5,
           childAspectRatio: 1.0,
           mainAxisSpacing: 4.0,
           crossAxisSpacing: 4.0,
@@ -121,13 +148,24 @@ class _HomePageState extends State<HomePage> {
 
   // 右下角添加按钮
   Widget buildFloatingActionButton() {
-    return new FloatingActionButton(
-//        backgroundColor: Colors.white,
-        child: Icon(Icons.add),
+    if (isDesktop) {
+      return new FloatingActionButton.extended(
+        heroTag: 'Extended Add',
+        icon: Icon(Icons.add),
         onPressed: () {
           // 首页右下角，添加订阅源功能
           showDialog(context: context, builder: (context) => AddRssDialog());
-        });
+        },
+        label: Text("添加"),
+      );
+    } else {
+      return new FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            // 首页右下角，添加订阅源功能
+            showDialog(context: context, builder: (context) => AddRssDialog());
+          });
+    }
   }
 
 // 当本地没有rss订阅源时，显示该界面

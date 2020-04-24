@@ -11,24 +11,34 @@ class MyDrawerHeader extends StatefulWidget {
 class _MyDrawerHeaderState extends State<MyDrawerHeader> {
   @override
   Widget build(BuildContext context) {
-    return new UserAccountsDrawerHeader(
-//      margin: EdgeInsets.zero,
-      accountName: new Text(
-        "登录",
-        style: TextStyle(color: Colors.white),
+    final textTheme = Theme.of(context).textTheme;
+    return new InkWell(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: new CircleAvatar(
+              backgroundImage: new AssetImage("assets/icon/icon_person.png"),
+            ),
+            margin: EdgeInsets.only(left: 15.0, top: 25.0, bottom: 5.0),
+          ),
+          new ListTile(
+            title: Text(
+              "登录",
+              style: textTheme.headline6,
+            ),
+            subtitle: Text(
+              "登录后显示",
+              style: textTheme.bodyText2,
+            ),
+          ),
+          Divider(),
+        ],
       ),
-      accountEmail: new Text(
-        "登录后显示",
-        style: TextStyle(color: Colors.white),
-      ),
-      currentAccountPicture: new CircleAvatar(
-        backgroundImage: new AssetImage("assets/icon/icon_person.png"),
-      ),
-//    otherAccountsPictures: <Widget>[
-//      new CircleAvatar(
-//        backgroundImage: new AssetImage("images/ymj_shuijiao.gif"),
-//      ),
-//    ],
+      onTap: () {
+        debugPrint("登录");
+      },
     );
   }
 }

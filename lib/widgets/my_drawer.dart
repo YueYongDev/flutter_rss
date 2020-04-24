@@ -2,6 +2,7 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/constant.dart';
+import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/my_drawer_header.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,11 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     String _colorKey;
 
+    final isDesktop = isDisplayDesktop(context);
+
     return new Drawer(
-        child: ListView(
+        child: new SafeArea(
+            child: ListView(
       // Important: Remove any padding from the ListView.
       padding: EdgeInsets.zero,
       children: <Widget>[
@@ -29,7 +33,9 @@ class _MyDrawerState extends State<MyDrawer> {
           leading: Icon(Icons.calendar_view_day, color: Colors.black54),
           title: Text('整理'),
           onTap: () {
-            Navigator.pop(context);
+            if (!isDesktop) {
+              Navigator.pop(context);
+            }
           },
         ),
         Divider(),
@@ -78,24 +84,30 @@ class _MyDrawerState extends State<MyDrawer> {
           leading: Icon(Icons.delete, color: Colors.black54),
           title: Text('清空缓存'),
           onTap: () {
-            Navigator.pop(context);
+            if (!isDesktop) {
+              Navigator.pop(context);
+            }
           },
         ),
         ListTile(
           leading: Icon(Icons.settings, color: Colors.black54),
           title: Text('设置'),
           onTap: () {
-            Navigator.pop(context);
+            if (!isDesktop) {
+              Navigator.pop(context);
+            }
           },
         ),
         ListTile(
           leading: Icon(Icons.info_outline, color: Colors.black54),
           title: Text('关于'),
           onTap: () {
-            Navigator.pop(context);
+            if (!isDesktop) {
+              Navigator.pop(context);
+            }
           },
         ),
       ],
-    ));
+    )));
   }
 }
