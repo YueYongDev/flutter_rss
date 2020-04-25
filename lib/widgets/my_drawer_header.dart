@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 // 侧边栏顶部样式
 class MyDrawerHeader extends StatefulWidget {
@@ -38,6 +39,7 @@ class _MyDrawerHeaderState extends State<MyDrawerHeader> {
       ),
       onTap: () {
         debugPrint("登录");
+        EasyLoading.showToast("暂未开放此功能，敬请期待！");
       },
     );
   }

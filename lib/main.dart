@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_rss/generated/l10n.dart';
+import 'package:flutter_rss/page/splash.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/utils/event_bus.dart';
 import 'package:flutter_rss/utils/sql_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'page/home/home_screen.dart';
 
 var bus = new EventBus();
 
@@ -25,6 +26,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Color _themeColor;
+  Locale _locale = const Locale('zn', 'CN');
 
   @override
   void initState() {
@@ -51,12 +53,32 @@ class _MyAppState extends State<MyApp> {
 
           return FlutterEasyLoading(
               child: MaterialApp(
+            // 设置语言
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate
+            ],
+            // 讲zh设置为第一项,没有适配语言时，汉语为首选项
+            supportedLocales: S.delegate.supportedLocales,
             title: 'Rss',
             theme: ThemeData(
                 primaryColor: _themeColor,
-                floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: _themeColor),
+                accentColor: _themeColor,
+                floatingActionButtonTheme:
+                    FloatingActionButtonThemeData(backgroundColor: _themeColor),
                 indicatorColor: Colors.white),
-            home: HomePage(),
+            locale: _locale,
+            home: SplashPage(),
+//            home: Builder(
+//              builder: (BuildContext context) {
+//                return Localizations.override(
+//                  context: context,
+//                  child: SplashPage(),
+//                );
+//              },
+//            ),
           ));
         },
       ),

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
+import 'package:flutter_rss/page/rss_parse.dart';
 import 'package:flutter_rss/services/db_services.dart';
-
-import '../rss_parse.dart';
 
 const appBarDesktopHeight = 158.0;
 
@@ -26,7 +26,7 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     final themeData = Theme.of(context);
     return AppBar(
       automaticallyImplyLeading: !isDesktop,
-      title: isDesktop ? null : Text("标题"),
+      title: isDesktop ? null : Text("Rss阅读器"),
       bottom: isDesktop
           ? PreferredSize(
               preferredSize: const Size.fromHeight(26),
@@ -46,11 +46,6 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.share),
           tooltip: "分享",
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: const Icon(Icons.favorite),
-          tooltip: "收藏",
           onPressed: () {},
         ),
         IconButton(
@@ -89,10 +84,7 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
           alignment: Alignment.center,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: colors[index % rssSource.length]
-//                image: DecorationImage(
-//                    image: NetworkImage(rss.logo), fit: BoxFit.cover),
-              ),
+              color: colors[index % rssSource.length]),
           child: Text(rss.title.substring(0, 1),
               style: TextStyle(color: Colors.white, fontSize: 16)),
         ),
@@ -108,7 +100,6 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
               context: context,
               builder: (cxt) {
                 var dialog = CupertinoActionSheet(
-                  title: Text("整理"),
                   cancelButton: CupertinoActionSheetAction(
                       onPressed: () {
                         Navigator.pop(cxt, 1);
@@ -119,7 +110,7 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
                         onPressed: () {
                           Navigator.pop(cxt, 2);
                         },
-                        child: Text('修改')),
+                        child: Text(S.of(context).edit)),
                     CupertinoActionSheetAction(
                         onPressed: () {
                           Navigator.pop(cxt, 3);
@@ -127,7 +118,7 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
                           // 通过eventBus通知主页刷新
                           bus.emit("refresh");
                         },
-                        child: Text('删除')),
+                        child: Text(S.of(context).delete)),
                   ],
                 );
                 return dialog;

@@ -1,7 +1,8 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rss/common/constant.dart';
+import 'package:flutter_rss/common/sp_constant.dart';
+import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
@@ -41,9 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initAsync() async {
     await _getRssData();
-    await SpUtil.getInstance();
 
-    colorKey = SpUtil.getString(Constant.keyThemeColor, defValue: 'blue');
+    colorKey = SpUtil.getString(SpConstant.keyThemeColor, defValue: 'blue');
     // 设置初始化主题颜色
     Provider.of<AppInfoProvider>(context, listen: false).setTheme(colorKey);
 
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
           // 首页右下角，添加订阅源功能
           showDialog(context: context, builder: (context) => AddRssDialog());
         },
-        label: Text("添加"),
+        label: Text(S.of(context).addIconText),
       );
     } else {
       return new FloatingActionButton(
@@ -179,10 +179,11 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           new Image.asset("assets/icon/rss.png", width: 100),
           new Container(height: 30),
-          new Text("点击下方按钮添加开启订阅"),
+          new Text(S.of(context).addSubscription),
           new SizedBox(height: 5),
           new GestureDetector(
-              child: new Text("刷新", style: new TextStyle(color: Colors.blue)),
+              child: new Text(S.of(context).refresh,
+                  style: new TextStyle(color: Colors.blue)),
               onTap: refresh)
 //        new Text("推荐订阅源")
         ],

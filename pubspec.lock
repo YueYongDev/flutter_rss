@@ -125,6 +125,11 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.4"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_spinkit:
     dependency: transitive
     description:
@@ -184,6 +189,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.4"
+  package_info:
+    dependency: "direct main"
+    description:
+      name: package_info
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.0+17"
   path:
     dependency: transitive
     description:

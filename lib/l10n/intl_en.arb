@@ -1,0 +1,16 @@
+{
+  "githubRepo": "{repoName} GitHub repository",
+  "aboutDialogDescription": "This application was built with flutter. To see the source code for this app, please visit the {repoLink}.",
+  "contactMe": "Contact Me 🙋",
+  "addIconText": "Add",
+  "addSubscription": "Click the button below to add and open a subscription",
+  "refresh": "refresh",
+  "edit": "edit",
+  "delete": "delete",
+  "changeLanguage": "Language",
+  "changeTheme": "Theme",
+  "clearCache": "Clear Cache",
+  "setting": "Setting",
+  "moreSetting": "Settings",
+  "aboutItem": "About"
+}

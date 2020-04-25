@@ -1,0 +1,16 @@
+{
+  "githubRepo": "{repoName} GitHub 代码库",
+  "aboutDialogDescription": "该应用通过 Flutter 构建，要查看此应用的源代码，请访问 {repoLink}。",
+  "contactMe": "联系我 🙋",
+  "addIconText": "添加",
+  "addSubscription": "点击下方按钮添加开启订阅",
+  "refresh": "刷新",
+  "edit": "修改",
+  "delete": "删除",
+  "changeLanguage": "切换语言",
+  "changeTheme": "切换主题",
+  "clearCache": "清空缓存",
+  "setting": "设置",
+  "moreSetting": "更多设置",
+  "aboutItem": "关于"
+}

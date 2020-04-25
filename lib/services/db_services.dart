@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rss/model/rss.dart';
+import 'package:flutter_rss/utils/sql_provider.dart';
 import 'package:flutter_rss/utils/sql_util.dart';
 
 final String dbRss = 'rss.db';
@@ -48,6 +49,14 @@ class DBServices {
           type: maps[i]['type'],
           logo: maps[i]['logo'],
           updateTime: maps[i]['updateTime']);
+    });
+  }
+
+  static Future<void> dropTableRss() async {
+    sqlRss.db.transaction((txn) async {
+      var batch = txn.batch();
+      batch.delete(tableRss);
+      await batch.commit();
     });
   }
 }
