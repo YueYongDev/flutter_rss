@@ -25,11 +25,13 @@ dependencies:
   path_provider: ^1.6.7
   provider: ^4.0.5
   package_info: ^0.4.0+14
+  get_it: 1.0.3+2
+  flutter_html: ^0.11.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons: ^0.7.5
 
 
 
@@ -48,6 +50,6 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/logo.png"
 flutter_intl:
   enabled: true

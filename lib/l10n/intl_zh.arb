@@ -1,4 +1,5 @@
 {
+  "appName": "RSS 阅读器",
   "githubRepo": "{repoName} GitHub 代码库",
   "aboutDialogDescription": "该应用通过 Flutter 构建，要查看此应用的源代码，请访问 {repoLink}。",
   "contactMe": "联系我 🙋",
@@ -23,6 +24,8 @@
   "updateRssSubscriptionDialogTitle": "更新 RSS 订阅源",
   "next": "下一步",
   "cancel": "取消",
+  "confirm":"确定",
+  "warning":"警告",
   "illegalLink": "链接不合法",
   "feedsAddress": "订阅源地址",
   "feedback": "反馈"

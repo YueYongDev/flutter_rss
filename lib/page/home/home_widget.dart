@@ -1,6 +1,8 @@
+import 'package:flustars/flustars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
@@ -10,13 +12,36 @@ import 'package:flutter_rss/widgets/rss_dialog.dart';
 
 const appBarDesktopHeight = 158.0;
 
-class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const AdaptiveAppBar({
-    Key key,
-    this.isDesktop = false,
-  }) : super(key: key);
+class AdaptiveAppBar extends StatefulWidget implements PreferredSizeWidget {
+  AdaptiveAppBar({Key key, this.isDesktop}) : super(key: key);
 
   final bool isDesktop;
+
+  @override
+  Size get preferredSize => isDesktop
+      ? const Size.fromHeight(appBarDesktopHeight)
+      : const Size.fromHeight(kToolbarHeight);
+
+  @override
+  _AdaptiveAppBarState createState() => _AdaptiveAppBarState();
+}
+
+class _AdaptiveAppBarState extends State<AdaptiveAppBar> {
+  bool isDesktop;
+
+  @override
+  void initState() {
+    super.initState();
+    isDesktop = this.widget.isDesktop;
+    // 监听语言切换事件
+    bus.on("locale", (arg) {
+      String language = SpUtil.getString(SpConstant.LANGUAGE);
+      setState(() {
+        if (language == "zh") S.load(Locale('zh', 'CN'));
+        if (language == "en") S.load(Locale('en', 'US'));
+      });
+    });
+  }
 
   @override
   Size get preferredSize => isDesktop
@@ -28,7 +53,7 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     final themeData = Theme.of(context);
     return AppBar(
       automaticallyImplyLeading: !isDesktop,
-      title: isDesktop ? null : Text("Rss阅读器"),
+      title: isDesktop ? null : Text(S.of(context).appName),
       bottom: isDesktop
           ? PreferredSize(
               preferredSize: const Size.fromHeight(26),
@@ -36,7 +61,7 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
                 alignment: AlignmentDirectional.centerStart,
                 margin: const EdgeInsetsDirectional.fromSTEB(72, 0, 0, 22),
                 child: Text(
-                  "Rss阅读器",
+                  S.of(context).appName,
                   style: themeData.textTheme.headline6.copyWith(
                     color: themeData.colorScheme.onPrimary,
                   ),
@@ -63,6 +88,60 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
+
+//class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
+//  const AdaptiveAppBar({
+//    Key key,
+//    this.isDesktop = false,
+//  }) : super(key: key);
+//
+//  final bool isDesktop;
+//
+//  @override
+//  Size get preferredSize => isDesktop
+//      ? const Size.fromHeight(appBarDesktopHeight)
+//      : const Size.fromHeight(kToolbarHeight);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    final themeData = Theme.of(context);
+//    return AppBar(
+//      automaticallyImplyLeading: !isDesktop,
+//      title: isDesktop ? null : Text(S.of(context).appName),
+//      bottom: isDesktop
+//          ? PreferredSize(
+//              preferredSize: const Size.fromHeight(26),
+//              child: Container(
+//                alignment: AlignmentDirectional.centerStart,
+//                margin: const EdgeInsetsDirectional.fromSTEB(72, 0, 0, 22),
+//                child: Text(
+//                  S.of(context).appName,
+//                  style: themeData.textTheme.headline6.copyWith(
+//                    color: themeData.colorScheme.onPrimary,
+//                  ),
+//                ),
+//              ),
+//            )
+//          : null,
+//      actions: [
+//        IconButton(
+//          icon: const Icon(Icons.share),
+//          tooltip: "分享",
+//          onPressed: () {
+//            EasyLoading.showToast(S.of(context).notAvailable);
+//          },
+//        ),
+//        IconButton(
+//          icon: const Icon(Icons.search),
+//          tooltip: "搜索",
+//          onPressed: () {
+//            EasyLoading.showToast(S.of(context).notAvailable);
+//          },
+//        ),
+//      ],
+//    );
+//  }
+//}
 
 // 首页的每个 item 表示一个 Rss 信息
 Widget buildRssItem(BuildContext context, List rssSource, int index) {

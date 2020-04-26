@@ -1,4 +1,5 @@
 {
+  "appName": "RSS Reader",
   "githubRepo": "{repoName} GitHub repository",
   "aboutDialogDescription": "This application was built with flutter. To see the source code for this app, please visit the {repoLink}.",
   "contactMe": "Contact Me 🙋",
@@ -23,6 +24,8 @@
   "updateRssSubscriptionDialogTitle": "Update RSS Subscription",
   "next": "Next",
   "cancel": "Cancel",
+  "confirm":"Confirm",
+  "warning":"Warning",
   "illegalLink": "Illegal link",
   "feedsAddress": "Feeds Address",
   "feedback": "Feedback"

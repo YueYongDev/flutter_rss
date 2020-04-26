@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/page/home/home_screen.dart';
+import 'package:flutter_rss/services/call_mail_sms_services.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -16,8 +17,12 @@ class _SplashPageState extends State<SplashPage> {
   jumpPage() {
     return Timer(Duration(milliseconds: 500), () {
       _initAsync().then((value) {
-        Navigator.push(context,
-            new MaterialPageRoute(builder: (context) => new HomePage()));
+        //跳转并关闭当前页面
+        Navigator.pushAndRemoveUntil(
+          context,
+          new MaterialPageRoute(builder: (context) => new HomePage()),
+          (route) => route == null,
+        );
       });
     });
   }
@@ -26,6 +31,8 @@ class _SplashPageState extends State<SplashPage> {
     /// App启动时读取Sp数据，需要异步等待Sp初始化完成。
     await SpUtil.getInstance();
     _initLocale();
+    // 注册服务
+    setupLocator();
   }
 
   @override
@@ -41,7 +48,6 @@ class _SplashPageState extends State<SplashPage> {
       if (language == "zh") S.load(Locale('zh', 'CN'));
       if (language == "en") S.load(Locale('en', 'US'));
     });
-
   }
 
   @override

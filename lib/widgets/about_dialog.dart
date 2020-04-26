@@ -1,18 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/generated/l10n.dart';
+import 'package:flutter_rss/services/call_mail_sms_services.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyAboutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    final textColor=Theme.of(context).primaryColor;
+    final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+    final textColor = Theme.of(context).primaryColor;
 
     final textTheme = Theme.of(context).textTheme;
-    final bodyTextStyle =
-        textTheme.bodyText1.apply(color: Colors.black);
+    final bodyTextStyle = textTheme.bodyText1.apply(color: Colors.black);
 
     final name = 'Rss 阅读器'; // Don't need to localize.
     final legalese = '© 2020 巴格梅克 '; // Don't need to localize.
@@ -86,13 +86,7 @@ class MyAboutDialog extends StatelessWidget {
                   text: contactMe,
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
-                      final url = 'Mailto:yueyong1030@outlook.com';
-                      if (await canLaunch(url)) {
-                        await launch(
-                          url,
-                          forceSafariVC: false,
-                        );
-                      }
+                      _service.sendEmail('yueyong1030@outlook.com');
                     },
                 ),
               ]),

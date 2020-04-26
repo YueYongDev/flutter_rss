@@ -27,6 +27,15 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  String get appName {
+    return Intl.message(
+      'RSS Reader',
+      name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
   String githubRepo(Object repoName) {
     return Intl.message(
       '$repoName GitHub repository',
@@ -238,6 +247,24 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get warning {
+    return Intl.message(
+      'Warning',
+      name: 'warning',
       desc: '',
       args: [],
     );

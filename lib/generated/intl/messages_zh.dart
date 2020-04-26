@@ -30,11 +30,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "addIconText" : MessageLookupByLibrary.simpleMessage("添加"),
     "addRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("添加 RSS 订阅源"),
     "addSubscription" : MessageLookupByLibrary.simpleMessage("点击下方按钮添加开启订阅"),
+    "appName" : MessageLookupByLibrary.simpleMessage("RSS 阅读器"),
     "cancel" : MessageLookupByLibrary.simpleMessage("取消"),
     "changeLanguage" : MessageLookupByLibrary.simpleMessage("切换语言"),
     "changeTheme" : MessageLookupByLibrary.simpleMessage("切换主题"),
     "clear" : MessageLookupByLibrary.simpleMessage("清空"),
     "clearCache" : MessageLookupByLibrary.simpleMessage("清空缓存"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("确定"),
     "contactMe" : MessageLookupByLibrary.simpleMessage("联系我 🙋"),
     "delete" : MessageLookupByLibrary.simpleMessage("删除"),
     "displayAfterLogin" : MessageLookupByLibrary.simpleMessage("登录后显示"),
@@ -51,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recommend" : MessageLookupByLibrary.simpleMessage("RSS推荐"),
     "refresh" : MessageLookupByLibrary.simpleMessage("刷新"),
     "setting" : MessageLookupByLibrary.simpleMessage("设置"),
-    "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("更新 RSS 订阅源")
+    "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("更新 RSS 订阅源"),
+    "warning" : MessageLookupByLibrary.simpleMessage("警告")
   };
 }

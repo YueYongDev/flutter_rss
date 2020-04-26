@@ -8,9 +8,9 @@ import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/about_dialog.dart';
-import 'package:flutter_rss/widgets/browser.dart';
 import 'package:flutter_rss/widgets/my_drawer_header.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // 左侧边栏
 class MyDrawer extends StatefulWidget {
@@ -71,17 +71,17 @@ class _MyDrawerState extends State<MyDrawer> {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text('警告'),
+                      title: Text(S.of(context).warning),
                       content: Text(('确定要清空缓存吗？')),
                       actions: <Widget>[
                         new FlatButton(
-                          child: new Text("取消"),
+                          child: new Text(S.of(context).cancel),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
                         new FlatButton(
-                          child: new Text("确定"),
+                          child: new Text(S.of(context).confirm),
                           onPressed: () {
                             Navigator.of(context).pop();
                             DBServices.dropTableRss();
@@ -110,14 +110,7 @@ class _MyDrawerState extends State<MyDrawer> {
             if (!isDesktop) {
               Navigator.pop(context);
             }
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new Browser(
-                        url: 'https://support.qq.com/products/147726',
-                        title: '吐个槽',
-                      )),
-            );
+            launch('https://support.qq.com/products/147726');
           },
         ),
         ListTile(
@@ -140,10 +133,11 @@ class _MyDrawerState extends State<MyDrawer> {
       if (value != null) {
         SpUtil.putString(SpConstant.LANGUAGE, value);
         setState(() {
+          groupValue = value;
           if (value == "zh") S.load(Locale('zh', 'CN'));
           if (value == "en") S.load(Locale('en', 'US'));
-          groupValue = value;
         });
+        bus.emit("locale");
       }
     }
 

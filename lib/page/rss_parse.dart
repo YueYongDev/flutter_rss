@@ -4,9 +4,9 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
+import 'package:flutter_rss/page/rss_detail.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/services/rss_service.dart';
-import 'package:flutter_rss/widgets/browser.dart';
 
 // ignore: must_be_immutable
 class RssParse extends StatefulWidget {
@@ -184,13 +184,11 @@ class _RssParseState extends State<RssParse> {
             subtitle: Text(author + " " + date),
             contentPadding: EdgeInsets.all(10.0),
             onTap: () async {
-              String tmp =
-                  'data:text/html;charset=utf-8;base64,${base64Encode(const Utf8Encoder().convert(content))}';
               Navigator.push(
                 context,
                 new MaterialPageRoute(
                     builder: (context) =>
-                        new Browser(url: url, htmlString: tmp, title: title)),
+                        new RssDetail(url: url, htmlString: content, title: title)),
               );
             },
           );

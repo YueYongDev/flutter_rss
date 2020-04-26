@@ -8,8 +8,8 @@ import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
-import 'package:flutter_rss/widgets/rss_dialog.dart';
 import 'package:flutter_rss/widgets/my_drawer.dart';
+import 'package:flutter_rss/widgets/rss_dialog.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +49,15 @@ class _HomePageState extends State<HomePage> {
     bus.on("refresh", (arg) {
       refresh();
     });
+
+    // 监听语言切换事件
+    bus.on("locale", (arg) {
+      String language = SpUtil.getString(SpConstant.LANGUAGE);
+      setState(() {
+        if (language == "zh") S.load(Locale('zh', 'CN'));
+        if (language == "en") S.load(Locale('en', 'US'));
+      });
+    });
   }
 
   _getRssData() async {
@@ -79,9 +88,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
               child: new Scaffold(
                   drawer: MyDrawer(),
-                  appBar: const AdaptiveAppBar(
-                    isDesktop: true,
-                  ),
+                  appBar: AdaptiveAppBar(isDesktop: true),
                   floatingActionButton: _buildFloatingActionButton(),
                   body: new RefreshIndicator(
                     onRefresh: refresh,
@@ -94,7 +101,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       return new Scaffold(
           drawer: MyDrawer(),
-          appBar: const AdaptiveAppBar(),
+          appBar: AdaptiveAppBar(isDesktop: false),
           floatingActionButton: _buildFloatingActionButton(),
           body: new RefreshIndicator(
             onRefresh: refresh,

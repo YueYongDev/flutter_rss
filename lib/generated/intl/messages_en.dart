@@ -30,11 +30,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "addIconText" : MessageLookupByLibrary.simpleMessage("Add"),
     "addRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("Add RSS Subscription"),
     "addSubscription" : MessageLookupByLibrary.simpleMessage("Click the button below to add and open a subscription"),
+    "appName" : MessageLookupByLibrary.simpleMessage("RSS Reader"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "changeLanguage" : MessageLookupByLibrary.simpleMessage("Language"),
     "changeTheme" : MessageLookupByLibrary.simpleMessage("Theme"),
     "clear" : MessageLookupByLibrary.simpleMessage("Clear"),
     "clearCache" : MessageLookupByLibrary.simpleMessage("Clear Cache"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),
     "contactMe" : MessageLookupByLibrary.simpleMessage("Contact Me 🙋"),
     "delete" : MessageLookupByLibrary.simpleMessage("Delete Subscription"),
     "displayAfterLogin" : MessageLookupByLibrary.simpleMessage("Display after login"),
@@ -51,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recommend" : MessageLookupByLibrary.simpleMessage("Recommend"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Refresh"),
     "setting" : MessageLookupByLibrary.simpleMessage("Setting"),
-    "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("Update RSS Subscription")
+    "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("Update RSS Subscription"),
+    "warning" : MessageLookupByLibrary.simpleMessage("Warning")
   };
 }
