@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Color _themeColor;
-  Locale _locale = const Locale('zn', 'CN');
+  Locale _locale = const Locale('zh', 'CN');
 
   @override
   void initState() {
@@ -53,6 +53,8 @@ class _MyAppState extends State<MyApp> {
 
           return FlutterEasyLoading(
               child: MaterialApp(
+            // 去除右上角Debug标签
+            debugShowCheckedModeBanner: false,
             // 设置语言
             localizationsDelegates: const [
               S.delegate,
@@ -62,6 +64,7 @@ class _MyAppState extends State<MyApp> {
             ],
             // 讲zh设置为第一项,没有适配语言时，汉语为首选项
             supportedLocales: S.delegate.supportedLocales,
+            locale: _locale,
             title: 'Rss',
             theme: ThemeData(
                 primaryColor: _themeColor,
@@ -69,16 +72,7 @@ class _MyAppState extends State<MyApp> {
                 floatingActionButtonTheme:
                     FloatingActionButtonThemeData(backgroundColor: _themeColor),
                 indicatorColor: Colors.white),
-            locale: _locale,
             home: SplashPage(),
-//            home: Builder(
-//              builder: (BuildContext context) {
-//                return Localizations.override(
-//                  context: context,
-//                  child: SplashPage(),
-//                );
-//              },
-//            ),
           ));
         },
       ),

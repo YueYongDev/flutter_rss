@@ -127,7 +127,6 @@ class _RssParseState extends State<RssParse> {
     debugPrint(snapshot.connectionState.toString());
     switch (snapshot.connectionState) {
       case ConnectionState.none:
-        print('还没有开始网络请求');
         return Text('还没有开始网络请求');
       case ConnectionState.active:
         print('active');
@@ -149,7 +148,6 @@ class _RssParseState extends State<RssParse> {
 
   Widget _createListView(BuildContext context, final feed) {
     return ListView.builder(
-        // todo 之后考虑将这些item全部上传到服务器用做数据分析
         itemCount: feed.items.length,
         itemBuilder: (BuildContext context, int index) {
           final item = feed.items[index];
@@ -182,7 +180,7 @@ class _RssParseState extends State<RssParse> {
 
           return ListTile(
             title: Text(title),
-            // todo 更改下时间的表示方式，尽量有好一些
+            // todo 更改下时间的表示方式，尽量友好一些
             subtitle: Text(author + " " + date),
             contentPadding: EdgeInsets.all(10.0),
             onTap: () async {

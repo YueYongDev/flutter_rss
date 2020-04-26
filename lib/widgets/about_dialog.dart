@@ -10,7 +10,6 @@ class MyAboutDialog extends StatelessWidget {
 
     final textColor=Theme.of(context).primaryColor;
 
-//    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final bodyTextStyle =
         textTheme.bodyText1.apply(color: Colors.black);

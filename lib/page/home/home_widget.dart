@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/page/rss_parse.dart';
 import 'package:flutter_rss/services/db_services.dart';
+import 'package:flutter_rss/widgets/rss_dialog.dart';
 
 const appBarDesktopHeight = 158.0;
 
@@ -46,12 +48,16 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.share),
           tooltip: "分享",
-          onPressed: () {},
+          onPressed: () {
+            EasyLoading.showToast(S.of(context).notAvailable);
+          },
         ),
         IconButton(
           icon: const Icon(Icons.search),
           tooltip: "搜索",
-          onPressed: () {},
+          onPressed: () {
+            EasyLoading.showToast(S.of(context).notAvailable);
+          },
         ),
       ],
     );
@@ -104,11 +110,16 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
                       onPressed: () {
                         Navigator.pop(cxt, 1);
                       },
-                      child: Text("Cancel")),
+                      child: Text(S.of(context).cancel)),
                   actions: <Widget>[
                     CupertinoActionSheetAction(
                         onPressed: () {
                           Navigator.pop(cxt, 2);
+                          // 弹出修改对话框
+                          showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  EditRssDialog(url: rss.url));
                         },
                         child: Text(S.of(context).edit)),
                     CupertinoActionSheetAction(

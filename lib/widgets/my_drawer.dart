@@ -8,6 +8,7 @@ import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/about_dialog.dart';
+import 'package:flutter_rss/widgets/browser.dart';
 import 'package:flutter_rss/widgets/my_drawer_header.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +85,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           onPressed: () {
                             Navigator.of(context).pop();
                             DBServices.dropTableRss();
+                            SpUtil.clear();
                             bus.emit("refresh");
                           },
                         ),
@@ -91,13 +93,31 @@ class _MyDrawerState extends State<MyDrawer> {
                     ));
           },
         ),
+        // 更多设置
+//        ListTile(
+//          leading: Icon(Icons.settings, color: Colors.black54),
+//          title: Text(S.of(context).moreSetting),
+//          onTap: () {
+//            if (!isDesktop) {
+//              Navigator.pop(context);
+//            }
+//          },
+//        ),
         ListTile(
-          leading: Icon(Icons.settings, color: Colors.black54),
-          title: Text(S.of(context).moreSetting),
+          leading: Icon(Icons.feedback, color: Colors.black54),
+          title: Text(S.of(context).feedback),
           onTap: () {
             if (!isDesktop) {
               Navigator.pop(context);
             }
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (context) => new Browser(
+                        url: 'https://support.qq.com/products/147726',
+                        title: '吐个槽',
+                      )),
+            );
           },
         ),
         ListTile(
@@ -128,7 +148,7 @@ class _MyDrawerState extends State<MyDrawer> {
     }
 
     return new ExpansionTile(
-      title: Text('切换语言'),
+      title: Text(S.of(context).changeLanguage),
       leading: Icon(Icons.language),
       initiallyExpanded: false,
       children: [

@@ -8,7 +8,7 @@ import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/app_provider.dart';
-import 'package:flutter_rss/widgets/add_rss_dialog.dart';
+import 'package:flutter_rss/widgets/rss_dialog.dart';
 import 'package:flutter_rss/widgets/my_drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var isDesktop;
-
-  BuildContext context;
 
   // Rss订阅源
   List rssSource = [];
@@ -70,7 +68,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     isDesktop = isDisplayDesktop(context);
-    this.context = context;
     final double shortestSide = MediaQuery.of(context).size.shortestSide;
     final bool useMobileLayout = shortestSide < 600.0;
     final Orientation orientation = MediaQuery.of(context).orientation;
@@ -85,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   appBar: const AdaptiveAppBar(
                     isDesktop: true,
                   ),
-                  floatingActionButton: buildFloatingActionButton(),
+                  floatingActionButton: _buildFloatingActionButton(),
                   body: new RefreshIndicator(
                     onRefresh: refresh,
                     child: useMobileLayout
@@ -98,7 +95,7 @@ class _HomePageState extends State<HomePage> {
       return new Scaffold(
           drawer: MyDrawer(),
           appBar: const AdaptiveAppBar(),
-          floatingActionButton: buildFloatingActionButton(),
+          floatingActionButton: _buildFloatingActionButton(),
           body: new RefreshIndicator(
             onRefresh: refresh,
             child: useMobileLayout
@@ -147,7 +144,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 右下角添加按钮
-  Widget buildFloatingActionButton() {
+  Widget _buildFloatingActionButton() {
     if (isDesktop) {
       return new FloatingActionButton.extended(
         heroTag: 'Extended Add',
@@ -185,7 +182,6 @@ class _HomePageState extends State<HomePage> {
               child: new Text(S.of(context).refresh,
                   style: new TextStyle(color: Colors.blue)),
               onTap: refresh)
-//        new Text("推荐订阅源")
         ],
       ),
     );

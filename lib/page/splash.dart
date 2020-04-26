@@ -42,8 +42,6 @@ class _SplashPageState extends State<SplashPage> {
       if (language == "en") S.load(Locale('en', 'US'));
     });
 
-    Locale myLocale = Localizations.localeOf(context);
-    debugPrint(myLocale.toString());
   }
 
   @override

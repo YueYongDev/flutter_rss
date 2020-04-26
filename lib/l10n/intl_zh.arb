@@ -12,5 +12,18 @@
   "clearCache": "清空缓存",
   "setting": "设置",
   "moreSetting": "更多设置",
-  "aboutItem": "关于"
+  "aboutItem": "关于",
+  "login": "登录",
+  "displayAfterLogin": "登录后显示",
+  "notAvailable": "该功能暂未开放",
+  "paste": "粘贴",
+  "clear": "清空",
+  "recommend": "RSS推荐",
+  "addRssSubscriptionDialogTitle": "添加 RSS 订阅源",
+  "updateRssSubscriptionDialogTitle": "更新 RSS 订阅源",
+  "next": "下一步",
+  "cancel": "取消",
+  "illegalLink": "链接不合法",
+  "feedsAddress": "订阅源地址",
+  "feedback": "反馈"
 }

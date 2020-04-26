@@ -74,7 +74,7 @@ class S {
 
   String get refresh {
     return Intl.message(
-      'refresh',
+      'Refresh',
       name: 'refresh',
       desc: '',
       args: [],
@@ -83,7 +83,7 @@ class S {
 
   String get edit {
     return Intl.message(
-      'edit',
+      'Update Subscription',
       name: 'edit',
       desc: '',
       args: [],
@@ -92,7 +92,7 @@ class S {
 
   String get delete {
     return Intl.message(
-      'delete',
+      'Delete Subscription',
       name: 'delete',
       desc: '',
       args: [],
@@ -148,6 +148,123 @@ class S {
     return Intl.message(
       'About',
       name: 'aboutItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get displayAfterLogin {
+    return Intl.message(
+      'Display after login',
+      name: 'displayAfterLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notAvailable {
+    return Intl.message(
+      'Features are not yet available',
+      name: 'notAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get paste {
+    return Intl.message(
+      'Paste',
+      name: 'paste',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get clear {
+    return Intl.message(
+      'Clear',
+      name: 'clear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get recommend {
+    return Intl.message(
+      'Recommend',
+      name: 'recommend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get addRssSubscriptionDialogTitle {
+    return Intl.message(
+      'Add RSS Subscription',
+      name: 'addRssSubscriptionDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get updateRssSubscriptionDialogTitle {
+    return Intl.message(
+      'Update RSS Subscription',
+      name: 'updateRssSubscriptionDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get illegalLink {
+    return Intl.message(
+      'Illegal link',
+      name: 'illegalLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get feedsAddress {
+    return Intl.message(
+      'Feeds Address',
+      name: 'feedsAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get feedback {
+    return Intl.message(
+      'Feedback',
+      name: 'feedback',
       desc: '',
       args: [],
     );

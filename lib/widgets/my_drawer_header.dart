@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_rss/generated/l10n.dart';
 
 // 侧边栏顶部样式
 class MyDrawerHeader extends StatefulWidget {
@@ -26,11 +27,11 @@ class _MyDrawerHeaderState extends State<MyDrawerHeader> {
           ),
           new ListTile(
             title: Text(
-              "登录",
+              S.of(context).login,
               style: textTheme.headline6,
             ),
             subtitle: Text(
-              "登录后显示",
+              S.of(context).displayAfterLogin,
               style: textTheme.bodyText2,
             ),
           ),
@@ -38,8 +39,7 @@ class _MyDrawerHeaderState extends State<MyDrawerHeader> {
         ],
       ),
       onTap: () {
-        debugPrint("登录");
-        EasyLoading.showToast("暂未开放此功能，敬请期待！");
+        EasyLoading.showToast(S.of(context).notAvailable);
       },
     );
   }
