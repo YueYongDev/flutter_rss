@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class RssDetail extends StatefulWidget {
@@ -39,6 +39,20 @@ class _RssDetailState extends State<RssDetail> {
               Navigator.pop(context, true);
             },
           ),
+          actions: <Widget>[
+            new IconButton(
+                icon: Icon(
+                  Icons.open_in_browser,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                })
+          ],
         ),
         body: Column(
           children: [Expanded(child: buildRssDetail())],
@@ -85,10 +99,5 @@ class _RssDetailState extends State<RssDetail> {
         },
       ),
     );
-//    return WebView(
-//      key: UniqueKey(),
-//      initialUrl: (htmlString == null || htmlString == '') ? url : htmlString,
-//      javascriptMode: JavascriptMode.unrestricted,
-//    );
   }
 }

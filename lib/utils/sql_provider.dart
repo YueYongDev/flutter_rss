@@ -1,6 +1,6 @@
 import 'package:flutter_rss/common/sql_table_data.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DBProvider {
   static Database db;

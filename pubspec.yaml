@@ -27,6 +27,7 @@ dependencies:
   package_info: ^0.4.0+14
   get_it: 1.0.3+2
   flutter_html: ^0.11.1
+  splashscreen: ^1.2.0
 
 dev_dependencies:
   flutter_test:

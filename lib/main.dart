@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_rss/generated/l10n.dart';
@@ -19,26 +18,21 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   Color _themeColor;
   Locale _locale = const Locale('zh', 'CN');
 
-  @override
-  void initState() {
-    super.initState();
-    // 允许横竖屏
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.portraitUp
-    ]);
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+//    // 允许横竖屏
+////    SystemChrome.setPreferredOrientations([
+////      DeviceOrientation.landscapeLeft,
+////      DeviceOrientation.landscapeRight,
+////      DeviceOrientation.portraitDown,
+////      DeviceOrientation.portraitUp
+////    ]);
+//  }
 
   @override
   Widget build(BuildContext context) {

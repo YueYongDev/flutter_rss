@@ -34,6 +34,13 @@ class _MyDrawerState extends State<MyDrawer> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    bus.off("refresh");
+    bus.off("locale");
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDesktop = isDisplayDesktop(context);
 

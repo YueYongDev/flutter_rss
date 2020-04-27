@@ -29,21 +29,22 @@ class _HomePageState extends State<HomePage> {
 
   Future future;
 
-  String colorKey = '';
-
   @override
   void initState() {
     super.initState();
-
     _initAsync();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // 移除监听事件
+    bus.off("refresh");
+    bus.off("locale");
   }
 
   Future<void> _initAsync() async {
     await _getRssData();
-
-    colorKey = SpUtil.getString(SpConstant.keyThemeColor, defValue: 'blue');
-    // 设置初始化主题颜色
-    Provider.of<AppInfoProvider>(context, listen: false).setTheme(colorKey);
 
     // 监听首页的刷新事件
     bus.on("refresh", (arg) {
