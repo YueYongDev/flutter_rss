@@ -22,18 +22,6 @@ class MyApp extends StatelessWidget {
   Color _themeColor;
   Locale _locale = const Locale('zh', 'CN');
 
-//  @override
-//  void initState() {
-//    super.initState();
-//    // 允许横竖屏
-////    SystemChrome.setPreferredOrientations([
-////      DeviceOrientation.landscapeLeft,
-////      DeviceOrientation.landscapeRight,
-////      DeviceOrientation.portraitDown,
-////      DeviceOrientation.portraitUp
-////    ]);
-//  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

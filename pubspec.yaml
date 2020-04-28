@@ -26,8 +26,13 @@ dependencies:
   provider: ^4.0.5
   package_info: ^0.4.0+14
   get_it: 1.0.3+2
-  flutter_html: ^0.11.1
   splashscreen: ^1.2.0
+  flutter_widget_from_html: ^0.3.3
+  cached_network_image: ^2.1.0+1
+  extended_image: ^0.7.3-dev
+  permission_handler: '^4.2.0+hotfix.2'
+  share: ^0.6.4
+  image_gallery_saver: ^1.2.2
 
 dev_dependencies:
   flutter_test:

@@ -7,10 +7,8 @@ import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/page/home/home_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
-import 'package:flutter_rss/utils/app_provider.dart';
 import 'package:flutter_rss/widgets/my_drawer.dart';
 import 'package:flutter_rss/widgets/rss_dialog.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);

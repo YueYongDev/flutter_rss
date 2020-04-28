@@ -296,6 +296,15 @@ class S {
       args: [],
     );
   }
+
+  String get savePicture {
+    return Intl.message(
+      'Save',
+      name: 'savePicture',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

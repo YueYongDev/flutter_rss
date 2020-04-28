@@ -89,60 +89,6 @@ class _AdaptiveAppBarState extends State<AdaptiveAppBar> {
   }
 }
 
-//class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
-//  const AdaptiveAppBar({
-//    Key key,
-//    this.isDesktop = false,
-//  }) : super(key: key);
-//
-//  final bool isDesktop;
-//
-//  @override
-//  Size get preferredSize => isDesktop
-//      ? const Size.fromHeight(appBarDesktopHeight)
-//      : const Size.fromHeight(kToolbarHeight);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    final themeData = Theme.of(context);
-//    return AppBar(
-//      automaticallyImplyLeading: !isDesktop,
-//      title: isDesktop ? null : Text(S.of(context).appName),
-//      bottom: isDesktop
-//          ? PreferredSize(
-//              preferredSize: const Size.fromHeight(26),
-//              child: Container(
-//                alignment: AlignmentDirectional.centerStart,
-//                margin: const EdgeInsetsDirectional.fromSTEB(72, 0, 0, 22),
-//                child: Text(
-//                  S.of(context).appName,
-//                  style: themeData.textTheme.headline6.copyWith(
-//                    color: themeData.colorScheme.onPrimary,
-//                  ),
-//                ),
-//              ),
-//            )
-//          : null,
-//      actions: [
-//        IconButton(
-//          icon: const Icon(Icons.share),
-//          tooltip: "分享",
-//          onPressed: () {
-//            EasyLoading.showToast(S.of(context).notAvailable);
-//          },
-//        ),
-//        IconButton(
-//          icon: const Icon(Icons.search),
-//          tooltip: "搜索",
-//          onPressed: () {
-//            EasyLoading.showToast(S.of(context).notAvailable);
-//          },
-//        ),
-//      ],
-//    );
-//  }
-//}
-
 // 首页的每个 item 表示一个 Rss 信息
 Widget buildRssItem(BuildContext context, List rssSource, int index) {
   List<Color> colors = [

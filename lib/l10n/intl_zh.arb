@@ -24,9 +24,10 @@
   "updateRssSubscriptionDialogTitle": "更新 RSS 订阅源",
   "next": "下一步",
   "cancel": "取消",
-  "confirm":"确定",
-  "warning":"警告",
+  "confirm": "确定",
+  "warning": "警告",
   "illegalLink": "链接不合法",
   "feedsAddress": "订阅源地址",
-  "feedback": "反馈"
+  "feedback": "反馈",
+  "savePicture": "保存图片"
 }

@@ -50,5 +50,7 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<string>YES</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>请允许App保存图片到相册</string>
 </dict>
 </plist>

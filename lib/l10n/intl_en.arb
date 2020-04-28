@@ -24,9 +24,10 @@
   "updateRssSubscriptionDialogTitle": "Update RSS Subscription",
   "next": "Next",
   "cancel": "Cancel",
-  "confirm":"Confirm",
-  "warning":"Warning",
+  "confirm": "Confirm",
+  "warning": "Warning",
   "illegalLink": "Illegal link",
   "feedsAddress": "Feeds Address",
-  "feedback": "Feedback"
+  "feedback": "Feedback",
+  "savePicture": "Save"
 }

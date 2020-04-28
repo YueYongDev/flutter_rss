@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/main.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_rss/model/rss.dart';
 import 'package:flutter_rss/page/rss_detail.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/services/rss_service.dart';
+import 'package:flutter_rss/utils/common_utils.dart';
 
 // ignore: must_be_immutable
 class RssParse extends StatefulWidget {
@@ -36,16 +35,13 @@ class _RssParseState extends State<RssParse> {
     Rss rssObj = this.widget.rss;
     // 说明是从对话框跳转来的
     if (rssObj.id == null) {
-      debugPrint('from dialog');
       // 若是从对话框跳转来的，先判断是否已经在数据库中
       Rss rss = await DBServices.getRssByUrl(rssObj.url);
       // 若存在，则应该也保存了其type
       if (rss != null) {
-        debugPrint('数据库中有该条rss信息:' + rss.toMap().toString());
         // 带type的解析
         response = await RssService().getFeed(rss.url, type: rss.type);
       } else {
-        debugPrint('数据库中没有该条rss信息');
         // 不带type的解析
         response = await RssService().getFeed(rssObj.url);
         // 解析成功，将rss信息写入
@@ -54,7 +50,6 @@ class _RssParseState extends State<RssParse> {
         }
       }
     } else {
-      debugPrint('from icon');
       // 否则是从首页图标点进来的
       response = await RssService().getFeed(rssObj.url, type: rssObj.type);
     }
@@ -124,20 +119,16 @@ class _RssParseState extends State<RssParse> {
 
   ///snapshot就是_calculation在时间轴上执行过程的状态快照
   Widget _buildFuture(BuildContext context, AsyncSnapshot snapshot) {
-    debugPrint(snapshot.connectionState.toString());
     switch (snapshot.connectionState) {
       case ConnectionState.none:
         return Text('还没有开始网络请求');
       case ConnectionState.active:
-        print('active');
         return Text('ConnectionState.active');
       case ConnectionState.waiting:
-        print('waiting');
         return Center(
           child: CircularProgressIndicator(),
         );
       case ConnectionState.done:
-        print('done');
         if (snapshot.hasError)
           return Center(child: Text('Error: ${snapshot.error}'));
         return _createListView(context, snapshot.data);
@@ -158,37 +149,33 @@ class _RssParseState extends State<RssParse> {
           String author = '';
           String content = '';
           if (type == 'RssItem') {
-            date = (item.pubDate == null) ? '' : item.pubDate;
-            url = item.link;
-            content = item.description;
-            author = (item.author == null) ? '' : item.author;
+            date = item.pubDate ?? "";
+            url = item.link ?? "";
+            content = item.description ?? "";
+            author = item.author ?? '';
+            date = CommonUtils.formatGMTTime(date);
           } else if (type == 'AtomItem') {
-            date = (item.published == null) ? '' : item.published;
-            url = item.links[0].href;
+            date = item.published ?? '';
+            url = item.links[0].href ?? "";
             content = item.content;
-            author = item.authors[0].name;
+            author = item.authors[0].name ?? "";
           } else {}
-          try {
-            date = (date == '')
-                ? ''
-                // : TimelineUtil.formatByDateTime(DateTime.parse(date));
-                : TimelineUtil.formatByDateTime(
-                    DateUtil.getDateTime(date, isUtc: true));
-          } on Error {
-            date = '';
-          }
-
+          date = TimelineUtil.formatByDateTime(DateUtil.getDateTime(date));
+          RssItem rssItem = new RssItem(
+              title: title,
+              time: date,
+              content: content,
+              url: url,
+              author: author);
           return ListTile(
             title: Text(title),
-            // todo 更改下时间的表示方式，尽量友好一些
-            subtitle: Text(author + " " + date),
+            subtitle: Text(author + "  " + date),
             contentPadding: EdgeInsets.all(10.0),
             onTap: () async {
               Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        new RssDetail(url: url, htmlString: content, title: title)),
+                    builder: (context) => new RssDetail(rssItem: rssItem)),
               );
             },
           );
