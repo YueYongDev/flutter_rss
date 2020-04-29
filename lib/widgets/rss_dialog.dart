@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/model/rss.dart';
-import 'package:flutter_rss/page/rss_parse.dart';
+import 'package:flutter_rss/page/rss_page/rss_page.dart';
+import 'package:flutter_rss/page/rss_page/rss_parse.dart';
 
 class AddRssDialog extends StatefulWidget {
   AddRssDialog({Key key}) : super(key: key);
@@ -102,10 +103,11 @@ class _AddRssDialogState extends State<AddRssDialog> {
             Navigator.pop(context);
             if (RegexUtil.isURL(input)) {
               Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>
-                          new RssParse(rss: new Rss(url: input))));
+                context,
+                new MaterialPageRoute(
+                    builder: (context) =>
+                        new RssPage(rss: new Rss(url: input))),
+              );
             } else {
               EasyLoading.showError(S.of(context).illegalLink);
             }
@@ -174,7 +176,7 @@ class _EditRssDialogState extends State<EditRssDialog> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) =>
-                          new RssParse(rss: new Rss(url: input))));
+                          new RssList(rss: new Rss(url: input))));
             } else {
               EasyLoading.showError(S.of(context).illegalLink);
             }

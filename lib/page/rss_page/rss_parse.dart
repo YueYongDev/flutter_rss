@@ -2,22 +2,22 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
-import 'package:flutter_rss/page/rss_detail.dart';
+import 'package:flutter_rss/page/rss_page/rss_detail.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/services/rss_service.dart';
+import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/utils/common_utils.dart';
 
-// ignore: must_be_immutable
-class RssParse extends StatefulWidget {
-  Rss rss;
+class RssList extends StatefulWidget {
+  final Rss rss;
 
-  RssParse({this.rss});
+  RssList({this.rss});
 
   @override
-  _RssParseState createState() => _RssParseState();
+  _RssListState createState() => _RssListState();
 }
 
-class _RssParseState extends State<RssParse> {
+class _RssListState extends State<RssList> {
   String title = '';
 
   Future future;
@@ -137,8 +137,9 @@ class _RssParseState extends State<RssParse> {
     }
   }
 
-  // todo 做一下平板的适配
+  // 创建RSS Item列表
   Widget _createListView(BuildContext context, final feed) {
+    var isDesktop = isDisplayDesktop(context);
     return ListView.builder(
         itemCount: feed.items.length,
         itemBuilder: (BuildContext context, int index) {
@@ -173,11 +174,17 @@ class _RssParseState extends State<RssParse> {
             subtitle: Text(author + "  " + date),
             contentPadding: EdgeInsets.all(10.0),
             onTap: () async {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new RssDetail(rssItem: rssItem)),
-              );
+              // 如果是平板的话，就不需要跳转，直接执行刷新操作就可以了
+              if (isDesktop) {
+                if (rssItem != null && rssItem.title != null)
+                  bus.emit('setRssItem', rssItem);
+              } else {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new RssDetail(rssItem: rssItem)),
+                );
+              }
             },
           );
         });

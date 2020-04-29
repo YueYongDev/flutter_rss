@@ -132,21 +132,24 @@ class PhotoViewSimpleScreen extends StatelessWidget {
         ]);
       }
       if (status == PermissionStatus.granted) {
-        var response = await Dio()
-            .get(url, options: Options(responseType: ResponseType.bytes));
-        final result = await ImageGallerySaver.saveImage(
-            Uint8List.fromList(response.data));
-        return result != '' || result != null;
+        return saveImageOnAndroidAndiOS(url);
       }
     } else if (Platform.isIOS) {
-      var response = await Dio()
-          .get(url, options: Options(responseType: ResponseType.bytes));
-      final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
-      return result != '' || result != null;
+      return saveImageOnAndroidAndiOS(url);
     } else if (Platform.isMacOS) {
       // todo 待完成MacOS上的图片保存功能
     }
     return false;
+  }
+
+  // 在Android和iOS上保存图片
+  saveImageOnAndroidAndiOS(String url) async {
+    EasyLoading.show();
+    var response = await Dio()
+        .get(url, options: Options(responseType: ResponseType.bytes));
+    final result =
+        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+    EasyLoading.dismiss();
+    return result != '' || result != null;
   }
 }

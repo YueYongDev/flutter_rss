@@ -6,7 +6,7 @@ import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
-import 'package:flutter_rss/page/rss_parse.dart';
+import 'package:flutter_rss/page/rss_page/rss_page.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/widgets/rss_dialog.dart';
 
@@ -122,10 +122,10 @@ Widget buildRssItem(BuildContext context, List rssSource, int index) {
         onTap: () {
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => new RssParse(rss: rss)),
+            new MaterialPageRoute(builder: (context) => new RssPage(rss: rss)),
           );
         },
-        // todo 长按从底部弹出更新或删除选项
+        // 长按从底部弹出更新或删除选项
         onLongPress: () {
           showCupertinoModalPopup<int>(
               context: context,
