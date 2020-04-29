@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recommend" : MessageLookupByLibrary.simpleMessage("Recommend"),
     "refresh" : MessageLookupByLibrary.simpleMessage("Refresh"),
     "savePicture" : MessageLookupByLibrary.simpleMessage("Save"),
+    "savedSuccess" : MessageLookupByLibrary.simpleMessage("Success"),
     "setting" : MessageLookupByLibrary.simpleMessage("Setting"),
     "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("Update RSS Subscription"),
     "warning" : MessageLookupByLibrary.simpleMessage("Warning")

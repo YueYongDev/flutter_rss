@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -65,7 +66,12 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                                 CupertinoActionSheetAction(
                                     onPressed: () async {
                                       Navigator.pop(cxt, 2);
-                                      await saveNetworkImageToPhoto(url);
+                                      bool result =
+                                          await saveNetworkImageToPhoto(url);
+                                      if (result) {
+                                        EasyLoading.showToast(
+                                            S.of(context).savedSuccess);
+                                      }
                                     },
                                     child: Text(S.of(context).savePicture)),
                               ],
@@ -89,6 +95,24 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   ),
+                ),
+                Positioned(
+                  //右下角保存按钮
+                  right: 10,
+                  bottom: MediaQuery.of(context).padding.bottom,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.file_download,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      bool result = await saveNetworkImageToPhoto(url);
+                      if (result) {
+                        EasyLoading.showToast(S.of(context).savedSuccess);
+                      }
+                    },
+                  ),
                 )
               ],
             ),
@@ -96,7 +120,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
     );
   }
 
-  // todo Android 10 有问题，待解决
+  // 保存图片到本地
   Future saveNetworkImageToPhoto(String url, {bool useCache: true}) async {
     if (Platform.isAndroid) {
       // 检查并请求权限
@@ -107,11 +131,22 @@ class PhotoViewSimpleScreen extends StatelessWidget {
           PermissionGroup.storage,
         ]);
       }
+      if (status == PermissionStatus.granted) {
+        var response = await Dio()
+            .get(url, options: Options(responseType: ResponseType.bytes));
+        final result = await ImageGallerySaver.saveImage(
+            Uint8List.fromList(response.data));
+        return result != '' || result != null;
+      }
+    } else if (Platform.isIOS) {
+      var response = await Dio()
+          .get(url, options: Options(responseType: ResponseType.bytes));
+      final result =
+          await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+      return result != '' || result != null;
+    } else if (Platform.isMacOS) {
+      // todo 待完成MacOS上的图片保存功能
     }
-    var response = await Dio()
-        .get(url, options: Options(responseType: ResponseType.bytes));
-    final result =
-        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
-    print(result);
+    return false;
   }
 }

@@ -305,6 +305,15 @@ class S {
       args: [],
     );
   }
+
+  String get savedSuccess {
+    return Intl.message(
+      'Success',
+      name: 'savedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

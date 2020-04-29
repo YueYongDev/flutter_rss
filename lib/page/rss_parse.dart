@@ -137,6 +137,7 @@ class _RssParseState extends State<RssParse> {
     }
   }
 
+  // todo 做一下平板的适配
   Widget _createListView(BuildContext context, final feed) {
     return ListView.builder(
         itemCount: feed.items.length,

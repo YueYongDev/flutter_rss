@@ -29,5 +29,6 @@
   "illegalLink": "Illegal link",
   "feedsAddress": "Feeds Address",
   "feedback": "Feedback",
-  "savePicture": "Save"
+  "savePicture": "Save",
+  "savedSuccess": "Success"
 }

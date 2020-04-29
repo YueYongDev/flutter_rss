@@ -29,5 +29,6 @@
   "illegalLink": "链接不合法",
   "feedsAddress": "订阅源地址",
   "feedback": "反馈",
-  "savePicture": "保存图片"
+  "savePicture": "保存图片",
+  "savedSuccess": "保存成功"
 }

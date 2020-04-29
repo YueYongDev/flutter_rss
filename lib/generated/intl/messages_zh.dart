@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "recommend" : MessageLookupByLibrary.simpleMessage("RSS推荐"),
     "refresh" : MessageLookupByLibrary.simpleMessage("刷新"),
     "savePicture" : MessageLookupByLibrary.simpleMessage("保存图片"),
+    "savedSuccess" : MessageLookupByLibrary.simpleMessage("保存成功"),
     "setting" : MessageLookupByLibrary.simpleMessage("设置"),
     "updateRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("更新 RSS 订阅源"),
     "warning" : MessageLookupByLibrary.simpleMessage("警告")
