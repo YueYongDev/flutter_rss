@@ -155,14 +155,17 @@ class _RssListState extends State<RssList> {
             url = item.link ?? "";
             content = item.description ?? "";
             author = item.author ?? '';
-            date = CommonUtils.formatGMTTime(date);
+            date =
+                (date.contains("GMT")) ? CommonUtils.formatGMTTime(date) : "";
           } else if (type == 'AtomItem') {
             date = item.published ?? '';
             url = item.links[0].href ?? "";
             content = item.content;
             author = item.authors[0].name ?? "";
           } else {}
-          date = TimelineUtil.formatByDateTime(DateUtil.getDateTime(date));
+          date = (date != "")
+              ? TimelineUtil.formatByDateTime(DateUtil.getDateTime(date))
+              : "";
           RssItem rssItem = new RssItem(
               title: title,
               time: date,

@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:extended_image/extended_image.dart';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
+import 'package:flutter_rss/page/photo_view.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
-import 'package:flutter_rss/widgets/view_image.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -193,75 +194,70 @@ class _RssDetailState extends State<RssDetail> {
       },
       // 设置行高
       textStyle: new TextStyle(height: 1.5),
-      // 设置图片的点击事件
-      builderCallback: (meta, e) {
-        if (e.localName == 'img' && e.attributes.containsKey('src')) {
-          meta = lazySet(meta, buildOp: imgOnTap(e.attributes['src']));
-        }
-        return meta;
-      },
     );
   }
-
-  BuildOp imgOnTap(String src) => BuildOp(
-        priority: 9999,
-        onWidgets: (_, widgets) => widgets.map((widget) => GestureDetector(
-              child: widget,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => PhotoViewSimpleScreen(
-                          url: src,
-                          loadingChild: new Center(
-                              child: new CircularProgressIndicator()),
-                          imageProvider: ExtendedNetworkImageProvider(src),
-                          heroTag: 'simple')),
-                );
-              },
-            )),
-      );
 }
 
-//todo 如果需要加载的图片太多的话会出现死机的情况，待修复
+// 已修复加载的图片太多的话会出现死机的情况
 class _MyWidgetFactory extends WidgetFactory {
   _MyWidgetFactory(HtmlWidgetConfig config) : super(config);
 
   @override
   Widget buildImage(String url, {double height, String text, double width}) {
-    final imageWidget = ExtendedImage.network(url,
-        fit: BoxFit.fill,
-        enableLoadState: true,
-        // ignore: missing_return
-        cache: true, loadStateChanged: (ExtendedImageState state) {
-      switch (state.extendedImageLoadState) {
-        case LoadState.completed:
-          return null;
-        case LoadState.loading:
-          return new Center(child: new CircularProgressIndicator());
-          break;
-        case LoadState.failed:
-          return GestureDetector(
-            child: Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                Icon(Icons.warning, color: Colors.red),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Text("load image failed, click to reload",
-                      textAlign: TextAlign.center),
-                )
-              ],
-            ),
+    return new Container(child: RssDetailImage(url: url));
+  }
+}
+
+// Rss详情页中图片加载自定义
+class RssDetailImage extends StatefulWidget {
+  final String url;
+
+  const RssDetailImage({Key key, this.url}) : super(key: key);
+
+  @override
+  _RssDetailImageState createState() => _RssDetailImageState();
+}
+
+class _RssDetailImageState extends State<RssDetailImage> {
+  Uint8List data;
+
+  @override
+  void initState() {
+    _initAsync();
+    super.initState();
+  }
+
+  _initAsync() async {
+    data = await getImageData(this.widget.url);
+    if (mounted) {
+      setState(() {
+        data = data;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // 直接通过内存加载图片，一方面可以通过异步的网络请求获取图片信息，防止线程阻塞，另一方面可以很好的将byte数组传到下一个页面，方便下载
+    return (data == null)
+        ? new Center(child: new CircularProgressIndicator())
+        : new GestureDetector(
+            child: Image.memory(data),
             onTap: () {
-              state.reLoadImage();
-            },
-          );
-          break;
-      }
-    });
-    return imageWidget;
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => PhotoViewSimpleScreen(
+                        imageData: data,
+                        imageProvider: MemoryImage(data),
+                        heroTag: 'simple')),
+              );
+            });
+  }
+
+  getImageData(String url) async {
+    var response = await Dio()
+        .get(url, options: Options(responseType: ResponseType.bytes));
+    return response.data;
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PhotoViewSimpleScreen extends StatelessWidget {
   const PhotoViewSimpleScreen({
-    this.url, //图片url
+    this.imageData, //图片url
     this.imageProvider, //图片
     this.loadingChild, //加载时的widget
     this.backgroundDecoration, //背景修饰
@@ -21,7 +20,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
     this.heroTag, //hero动画tagid
   });
 
-  final String url;
+  final Uint8List imageData;
   final ImageProvider imageProvider;
   final Widget loadingChild;
   final Decoration backgroundDecoration;
@@ -67,7 +66,8 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                                     onPressed: () async {
                                       Navigator.pop(cxt, 2);
                                       bool result =
-                                          await saveNetworkImageToPhoto(url);
+                                          await saveNetworkImageToPhoto(
+                                              imageData);
                                       if (result) {
                                         EasyLoading.showToast(
                                             S.of(context).savedSuccess);
@@ -107,7 +107,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                     onPressed: () async {
-                      bool result = await saveNetworkImageToPhoto(url);
+                      bool result = await saveNetworkImageToPhoto(imageData);
                       if (result) {
                         EasyLoading.showToast(S.of(context).savedSuccess);
                       }
@@ -121,7 +121,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
   }
 
   // 保存图片到本地
-  Future saveNetworkImageToPhoto(String url, {bool useCache: true}) async {
+  Future saveNetworkImageToPhoto(Uint8List imageData) async {
     if (Platform.isAndroid) {
       // 检查并请求权限
       PermissionStatus status = await PermissionHandler()
@@ -132,23 +132,22 @@ class PhotoViewSimpleScreen extends StatelessWidget {
         ]);
       }
       if (status == PermissionStatus.granted) {
-        return saveImageOnAndroidAndiOS(url);
+        return saveImageOnAndroidAndiOS(imageData);
       }
     } else if (Platform.isIOS) {
-      return saveImageOnAndroidAndiOS(url);
+      return saveImageOnAndroidAndiOS(imageData);
     } else if (Platform.isMacOS) {
       // todo 待完成MacOS上的图片保存功能
+      EasyLoading.showToast("暂不支持该平台");
     }
     return false;
   }
 
   // 在Android和iOS上保存图片
-  saveImageOnAndroidAndiOS(String url) async {
+  saveImageOnAndroidAndiOS(Uint8List imageData) async {
     EasyLoading.show();
-    var response = await Dio()
-        .get(url, options: Options(responseType: ResponseType.bytes));
     final result =
-        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+        await ImageGallerySaver.saveImage(Uint8List.fromList(imageData));
     EasyLoading.dismiss();
     return result != '' || result != null;
   }
