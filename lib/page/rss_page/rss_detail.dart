@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/main.dart';
@@ -198,7 +196,7 @@ class _RssDetailState extends State<RssDetail> {
   }
 }
 
-// 已修复加载的图片太多的话会出现死机的情况
+// 修复加载的图片太多的话会出现死机的情况
 class _MyWidgetFactory extends WidgetFactory {
   _MyWidgetFactory(HtmlWidgetConfig config) : super(config);
 
@@ -219,40 +217,47 @@ class RssDetailImage extends StatefulWidget {
 }
 
 class _RssDetailImageState extends State<RssDetailImage> {
-  Uint8List data;
-
-  @override
-  void initState() {
-    _initAsync();
-    super.initState();
-  }
-
-  _initAsync() async {
-    data = await getImageData(this.widget.url);
-    if (mounted) {
-      setState(() {
-        data = data;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // 直接通过内存加载图片，一方面可以通过异步的网络请求获取图片信息，防止线程阻塞，另一方面可以很好的将byte数组传到下一个页面，方便下载
-    return (data == null)
-        ? new Center(child: new CircularProgressIndicator())
-        : new GestureDetector(
-            child: Image.memory(data),
-            onTap: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => PhotoViewSimpleScreen(
-                        imageData: data,
-                        imageProvider: MemoryImage(data),
-                        heroTag: 'simple')),
-              );
-            });
+    return new FutureBuilder(
+      future: getImageData(this.widget.url),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        // 请求已结束
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            // 请求失败，显示错误
+            return new Center(
+                child: GestureDetector(
+              child: Container(
+                  child: Text('图片加载失败，点击重新加载',
+                      style: TextStyle(color: Colors.white)),
+                  color: Colors.black45),
+              onTap: () {
+                getImageData(this.widget.url);
+              },
+            ));
+          } else {
+            // 请求成功，显示数据
+            return new GestureDetector(
+                child: Image.memory(snapshot.data),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => PhotoViewSimpleScreen(
+                            imageData: snapshot.data,
+                            imageProvider: MemoryImage(snapshot.data),
+                            heroTag: 'simple')),
+                  );
+                });
+          }
+        } else {
+          // 请求未结束，显示loading
+          return new Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   getImageData(String url) async {
