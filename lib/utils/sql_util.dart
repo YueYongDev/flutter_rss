@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_rss/utils/sql_provider.dart';
+import 'package:flutter_rss/provider/sql_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BaseModel {

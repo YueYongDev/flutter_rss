@@ -14,7 +14,7 @@ class MyAboutDialog extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final bodyTextStyle = textTheme.bodyText1.apply(color: Colors.black);
 
-    final name = 'Rss 阅读器'; // Don't need to localize.
+    final name = 'RSS 阅读器'; // Don't need to localize.
     final legalese = '© 2020 巴格梅克 '; // Don't need to localize.
 
     final repoText = S.of(context).githubRepo(name);

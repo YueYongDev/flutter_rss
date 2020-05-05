@@ -4,7 +4,7 @@ import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/page/home_page/home_screen.dart';
 import 'package:flutter_rss/services/call_mail_sms_services.dart';
-import 'package:flutter_rss/utils/app_provider.dart';
+import 'package:flutter_rss/provider/app_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 

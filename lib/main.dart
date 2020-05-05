@@ -3,9 +3,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/page/splash.dart';
-import 'package:flutter_rss/utils/app_provider.dart';
+import 'package:flutter_rss/provider/app_provider.dart';
 import 'package:flutter_rss/utils/event_bus.dart';
-import 'package:flutter_rss/utils/sql_provider.dart';
+import 'package:flutter_rss/provider/sql_provider.dart';
 import 'package:provider/provider.dart';
 
 var bus = new EventBus();

@@ -6,7 +6,7 @@ import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
-import 'package:flutter_rss/utils/app_provider.dart';
+import 'package:flutter_rss/provider/app_provider.dart';
 import 'package:flutter_rss/widgets/about_dialog.dart';
 import 'package:flutter_rss/widgets/my_drawer_header.dart';
 import 'package:provider/provider.dart';
@@ -187,7 +187,6 @@ class _MyDrawerState extends State<MyDrawer> {
                   setState(() {
                     _colorKey = key;
                   });
-                  SpUtil.putString(SpConstant.keyThemeColor, key);
                   Provider.of<AppInfoProvider>(context, listen: false)
                       .setTheme(key);
                 },

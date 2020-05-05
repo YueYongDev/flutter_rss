@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
-import 'package:flutter_rss/page/photo_view.dart';
+import 'package:flutter_rss/widgets/photo_view.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share/share.dart';
@@ -134,13 +137,18 @@ class _RssDetailState extends State<RssDetail> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    if (item.title != null) {
-                      Share.share(item.title +
-                          "\n来自：" +
-                          item.author +
-                          "\n访问：" +
-                          item.url +
-                          "\n分享自：RSS 阅读器");
+                    if (Platform.isMacOS) {
+                      // todo 待完成MacOS上的文章分享功能
+                      EasyLoading.showToast("暂不支持该平台的文章分享");
+                    } else {
+                      if (item.title != null) {
+                        Share.share(item.title +
+                            "\n来自：" +
+                            item.author +
+                            "\n访问：" +
+                            item.url +
+                            "\n分享自：RSS 阅读器");
+                      }
                     }
                   }),
               new IconButton(

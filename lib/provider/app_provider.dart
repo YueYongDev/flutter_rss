@@ -1,4 +1,6 @@
+import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rss/common/sp_constant.dart';
 
 Map<String, Color> themeColorMap = {
   'gray': Colors.grey,
@@ -27,5 +29,6 @@ class AppInfoProvider with ChangeNotifier {
   setTheme(String themeColor) {
     _themeColor = themeColor;
     notifyListeners();
+    SpUtil.putString(SpConstant.keyThemeColor, themeColor);
   }
 }

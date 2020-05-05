@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
-import 'package:flutter_rss/page/home_page/home_widget.dart';
+import 'package:flutter_rss/page/home_page/home_screen_widget.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
 import 'package:flutter_rss/widgets/my_drawer.dart';

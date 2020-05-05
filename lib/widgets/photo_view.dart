@@ -47,10 +47,9 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                   right: 0,
                   child: GestureDetector(
                     child: ExtendedImage(
-                      mode: ExtendedImageMode.gesture,
-                      enableSlideOutPage: true,
-                      image: imageProvider,
-                    ),
+                        mode: ExtendedImageMode.gesture,
+                        enableSlideOutPage: true,
+                        image: imageProvider),
                     onLongPress: () async {
                       showCupertinoModalPopup<int>(
                           context: context,
@@ -73,7 +72,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                                             S.of(context).savedSuccess);
                                       }
                                     },
-                                    child: Text(S.of(context).savePicture)),
+                                    child: Text(S.of(context).savePicture))
                               ],
                             );
                             return dialog;
@@ -86,11 +85,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                   right: 10,
                   top: MediaQuery.of(context).padding.top,
                   child: IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+                    icon: Icon(Icons.close, size: 30, color: Colors.white),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -101,11 +96,8 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                   right: 10,
                   bottom: MediaQuery.of(context).padding.bottom,
                   child: IconButton(
-                    icon: Icon(
-                      Icons.file_download,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+                    icon: Icon(Icons.file_download,
+                        size: 30, color: Colors.white),
                     onPressed: () async {
                       bool result = await saveNetworkImageToPhoto(imageData);
                       if (result) {
@@ -137,8 +129,8 @@ class PhotoViewSimpleScreen extends StatelessWidget {
     } else if (Platform.isIOS) {
       return saveImageOnAndroidAndiOS(imageData);
     } else if (Platform.isMacOS) {
-      // todo 待完成MacOS上的图片保存功能
-      EasyLoading.showToast("暂不支持该平台");
+      // todo 待完成MacOS的图片保存功能
+      EasyLoading.showToast("暂不支持该平台保存图片");
     }
     return false;
   }

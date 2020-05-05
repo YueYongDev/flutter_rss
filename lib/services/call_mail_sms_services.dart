@@ -9,7 +9,7 @@ class CallsAndMessagesService {
   void sendEmail(String email) => launch("mailto:$email");
 }
 
-GetIt locator = GetIt();
+GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerSingleton(CallsAndMessagesService());
