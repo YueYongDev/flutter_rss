@@ -27,7 +27,7 @@
 
 ## 预览
 
-| HOMEPAGE                                                                | GROUP                                                                   | PODCAST                                                                 | EPISODE                                                                 |
+| 首页                                                                | 设置                                                                   | 列表                                                                 | 详情                                                                 |
 | :---------------------------------------------------------------------- | :---------------------------------------------------------------------- | :---------------------------------------------------------------------- | :---------------------------------------------------------------------- |
 | ![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gehu520fbwj30u01hb40w.jpg) | ![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gehu6gdn4aj30u01hbgou.jpg) | ![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gehu6l373tj30u01hbq6n.jpg) | ![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gehu6q6llcj30u01hbqaj.jpg) |
 
