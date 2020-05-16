@@ -35,8 +35,6 @@ class MyApp extends StatelessWidget {
 
           return FlutterEasyLoading(
               child: MaterialApp(
-            // 去除右上角Debug标签
-            debugShowCheckedModeBanner: false,
             // 设置语言
             localizationsDelegates: const [
               S.delegate,
@@ -44,9 +42,12 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],
-            // 讲zh设置为第一项,没有适配语言时，汉语为首选项
+            // 讲zh设置为第一项,没有适配语言时，英语为首选项
             supportedLocales: S.delegate.supportedLocales,
+            // 设置默认语言
             locale: _locale,
+            // 去除右上角Debug标签
+            debugShowCheckedModeBanner: false,
             title: 'Rss',
             theme: ThemeData(
                 primaryColor: _themeColor,

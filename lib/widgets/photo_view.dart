@@ -11,8 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class PhotoViewSimpleScreen extends StatelessWidget {
   const PhotoViewSimpleScreen({
-    this.imageData, //图片url
-    this.imageProvider, //图片
+    this.imgUrl, //图片url
     this.loadingChild, //加载时的widget
     this.backgroundDecoration, //背景修饰
     this.minScale, //最大缩放倍数
@@ -20,8 +19,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
     this.heroTag, //hero动画tagid
   });
 
-  final Uint8List imageData;
-  final ImageProvider imageProvider;
+  final String imgUrl;
   final Widget loadingChild;
   final Decoration backgroundDecoration;
   final dynamic minScale;
@@ -47,9 +45,20 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                   right: 0,
                   child: GestureDetector(
                     child: ExtendedImage(
+                        loadStateChanged: (ExtendedImageState state) {
+                          switch (state.extendedImageLoadState) {
+                            case LoadState.loading:
+                              return new Center(
+                                  child: new CircularProgressIndicator());
+                              break;
+                            default:
+                              break;
+                          }
+                          return null;
+                        },
                         mode: ExtendedImageMode.gesture,
                         enableSlideOutPage: true,
-                        image: imageProvider),
+                        image: ExtendedNetworkImageProvider(imgUrl)),
                     onLongPress: () async {
                       showCupertinoModalPopup<int>(
                           context: context,
@@ -65,8 +74,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                                     onPressed: () async {
                                       Navigator.pop(cxt, 2);
                                       bool result =
-                                          await saveNetworkImageToPhoto(
-                                              imageData);
+                                          await saveNetworkImageToPhoto(imgUrl);
                                       if (result) {
                                         EasyLoading.showToast(
                                             S.of(context).savedSuccess);
@@ -99,7 +107,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
                     icon: Icon(Icons.file_download,
                         size: 30, color: Colors.white),
                     onPressed: () async {
-                      bool result = await saveNetworkImageToPhoto(imageData);
+                      bool result = await saveNetworkImageToPhoto(imgUrl);
                       if (result) {
                         EasyLoading.showToast(S.of(context).savedSuccess);
                       }
@@ -113,7 +121,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
   }
 
   // 保存图片到本地
-  Future saveNetworkImageToPhoto(Uint8List imageData) async {
+  Future saveNetworkImageToPhoto(String url) async {
     if (Platform.isAndroid) {
       // 检查并请求权限
       PermissionStatus status = await PermissionHandler()
@@ -124,10 +132,10 @@ class PhotoViewSimpleScreen extends StatelessWidget {
         ]);
       }
       if (status == PermissionStatus.granted) {
-        return saveImageOnAndroidAndiOS(imageData);
+        return saveImageOnAndroidAndiOS(url);
       }
     } else if (Platform.isIOS) {
-      return saveImageOnAndroidAndiOS(imageData);
+      return saveImageOnAndroidAndiOS(url);
     } else if (Platform.isMacOS) {
       // todo 待完成MacOS的图片保存功能
       EasyLoading.showToast("暂不支持该平台保存图片");
@@ -136,11 +144,11 @@ class PhotoViewSimpleScreen extends StatelessWidget {
   }
 
   // 在Android和iOS上保存图片
-  saveImageOnAndroidAndiOS(Uint8List imageData) async {
+  saveImageOnAndroidAndiOS(String url) async {
     EasyLoading.show();
-    final result =
-        await ImageGallerySaver.saveImage(Uint8List.fromList(imageData));
+    var data = await getNetworkImageData(url);
+    final result = await ImageGallerySaver.saveImage(Uint8List.fromList(data));
     EasyLoading.dismiss();
-    return result != '' || result != null;
+    return result;
   }
 }

@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/model/rss.dart';
-import 'package:flutter_rss/widgets/photo_view.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
+import 'package:flutter_rss/widgets/photo_view.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -187,26 +187,22 @@ class _RssDetailState extends State<RssDetail> {
 
   // 显示rss的内容，自定义解析器
   Widget buildRssDetail(RssItem item) {
-    return HtmlWidget(
-      item.content,
-      factoryBuilder: (hwc) => _MyWidgetFactory(hwc),
-      // 允许播放网络视频等
-      webView: true,
-      // 点击链接后用浏览器打开
-      onTapUrl: (url) async {
-        if (await canLaunch(url)) {
-          await launch(url, forceSafariVC: false);
-        }
-      },
-      // 设置行高
-      textStyle: new TextStyle(height: 1.5),
-    );
+    Widget htmlWidget;
+    if (htmlWidget == null) {
+      htmlWidget = HtmlWidget(
+        item.content,
+        webView: true,
+        buildAsync: true,
+        factoryBuilder: (config) => _MyWidgetFactory(config),
+      );
+    }
+
+    return htmlWidget;
   }
 }
 
-// 修复加载的图片太多的话会出现死机的情况
 class _MyWidgetFactory extends WidgetFactory {
-  _MyWidgetFactory(HtmlWidgetConfig config) : super(config);
+  _MyWidgetFactory(HtmlConfig config) : super(config);
 
   @override
   Widget buildImage(String url, {double height, String text, double width}) {
@@ -227,50 +223,22 @@ class RssDetailImage extends StatefulWidget {
 class _RssDetailImageState extends State<RssDetailImage> {
   @override
   Widget build(BuildContext context) {
-    // 直接通过内存加载图片，一方面可以通过异步的网络请求获取图片信息，防止线程阻塞，另一方面可以很好的将byte数组传到下一个页面，方便下载
-    return new FutureBuilder(
-      future: getImageData(this.widget.url),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        // 请求已结束
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            // 请求失败，显示错误
-            return new Center(
-                child: GestureDetector(
-              child: Container(
-                  child: Text('图片加载失败，点击重新加载',
-                      style: TextStyle(color: Colors.white)),
-                  color: Colors.black45),
-              onTap: () {
-                getImageData(this.widget.url);
-              },
-            ));
-          } else {
-            // 请求成功，显示数据
-            return new GestureDetector(
-                child: Image.memory(snapshot.data),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => PhotoViewSimpleScreen(
-                            imageData: snapshot.data,
-                            imageProvider: MemoryImage(snapshot.data),
-                            heroTag: 'simple')),
-                  );
-                });
-          }
-        } else {
-          // 请求未结束，显示loading
-          return new Center(child: CircularProgressIndicator());
-        }
+    return GestureDetector(
+      child: new CachedNetworkImage(
+        imageUrl: this.widget.url,
+        placeholder: (context, url) => new Center(
+          child: CircularProgressIndicator(),
+        ),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => PhotoViewSimpleScreen(
+                  imgUrl: this.widget.url, heroTag: 'simple')),
+        );
       },
     );
-  }
-
-  getImageData(String url) async {
-    var response = await Dio()
-        .get(url, options: Options(responseType: ResponseType.bytes));
-    return response.data;
   }
 }
