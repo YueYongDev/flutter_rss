@@ -1,5 +1,6 @@
 {
   "appName": "RSS Reader",
+  "appInfo": "A Simple RSS Reader",
   "githubRepo": "{repoName} GitHub repository",
   "aboutDialogDescription": "This application was built with flutter. To see the source code for this app, please visit the {repoLink}.",
   "contactMe": "Contact Me 🙋",

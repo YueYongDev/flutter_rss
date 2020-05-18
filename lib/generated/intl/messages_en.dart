@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addIconText" : MessageLookupByLibrary.simpleMessage("Add"),
     "addRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("Add RSS Subscription"),
     "addSubscription" : MessageLookupByLibrary.simpleMessage("Click the button below to add and open a subscription"),
+    "appInfo" : MessageLookupByLibrary.simpleMessage("A Simple RSS Reader"),
     "appName" : MessageLookupByLibrary.simpleMessage("RSS Reader"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "changeLanguage" : MessageLookupByLibrary.simpleMessage("Language"),

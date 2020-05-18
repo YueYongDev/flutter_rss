@@ -36,7 +36,7 @@ class RssItem {
   String time;
   String author;
 
-  RssItem({this.title, this.url, this.content, this.time,this.author});
+  RssItem({this.title, this.url, this.content, this.time, this.author});
 
   Map<String, dynamic> toMap() {
     return {
@@ -44,7 +44,7 @@ class RssItem {
       'url': url,
       'content': content,
       'time': time,
-      'author':author
+      'author': author
     };
   }
 
@@ -53,6 +53,6 @@ class RssItem {
     url = map['url'];
     content = map['content'];
     time = map['time'];
-    author=map['author'];
+    author = map['author'];
   }
 }

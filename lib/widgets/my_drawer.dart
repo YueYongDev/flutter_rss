@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/main.dart';
+import 'package:flutter_rss/provider/app_provider.dart';
 import 'package:flutter_rss/services/db_services.dart';
 import 'package:flutter_rss/utils/adaptive.dart';
-import 'package:flutter_rss/provider/app_provider.dart';
 import 'package:flutter_rss/widgets/about_dialog.dart';
 import 'package:flutter_rss/widgets/my_drawer_header.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +22,6 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   String _colorKey;
-
-  bool _lights = false;
-
   String groupValue = 'zh';
 
   @override
@@ -37,7 +34,6 @@ class _MyDrawerState extends State<MyDrawer> {
   void dispose() {
     super.dispose();
     bus.off("refresh");
-    bus.off("locale");
   }
 
   @override
@@ -57,17 +53,6 @@ class _MyDrawerState extends State<MyDrawer> {
             margin: EdgeInsets.only(left: 10, bottom: 10)),
         buildLanguageItem(),
         buildThemeItem(),
-//        //todo 深色模式
-//        SwitchListTile(
-//          title: const Text('深色模式'),
-//          value: _lights,
-//          onChanged: (bool value) {
-//            setState(() {
-//              _lights = value;
-//            });
-//          },
-//          secondary: const Icon(Icons.lightbulb_outline),
-//        ),
         ListTile(
           leading: Icon(Icons.delete, color: Colors.black54),
           title: Text(S.of(context).clearCache),
@@ -100,16 +85,6 @@ class _MyDrawerState extends State<MyDrawer> {
                     ));
           },
         ),
-        // 更多设置
-//        ListTile(
-//          leading: Icon(Icons.settings, color: Colors.black54),
-//          title: Text(S.of(context).moreSetting),
-//          onTap: () {
-//            if (!isDesktop) {
-//              Navigator.pop(context);
-//            }
-//          },
-//        ),
         ListTile(
           leading: Icon(Icons.feedback, color: Colors.black54),
           title: Text(S.of(context).feedback),
@@ -138,13 +113,10 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget buildLanguageItem() {
     void _changed(value) {
       if (value != null) {
-        SpUtil.putString(SpConstant.LANGUAGE, value);
+        Provider.of<AppInfoProvider>(context, listen: false).setLocale(value);
         setState(() {
           groupValue = value;
-          if (value == "zh") S.load(Locale('zh', 'CN'));
-          if (value == "en") S.load(Locale('en', 'US'));
         });
-        bus.emit("locale");
       }
     }
 

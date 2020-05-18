@@ -1,5 +1,6 @@
 {
   "appName": "RSS 阅读器",
+  "appInfo": "一款简洁的 RSS 阅读器",
   "githubRepo": "{repoName} GitHub 代码库",
   "aboutDialogDescription": "该应用通过 Flutter 构建，要查看此应用的源代码，请访问 {repoLink}。",
   "contactMe": "联系我 🙋",

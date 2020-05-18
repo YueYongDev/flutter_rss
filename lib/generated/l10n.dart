@@ -15,8 +15,8 @@ class S {
     AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
@@ -31,6 +31,15 @@ class S {
     return Intl.message(
       'RSS Reader',
       name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get appInfo {
+    return Intl.message(
+      'A Simple RSS Reader',
+      name: 'appInfo',
       desc: '',
       args: [],
     );
@@ -335,7 +344,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
-      for (Locale supportedLocale in supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
         if (supportedLocale.languageCode == locale.languageCode) {
           return true;
         }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rss/common/sp_constant.dart';
 import 'package:flutter_rss/generated/l10n.dart';
 import 'package:flutter_rss/page/home_page/home_screen.dart';
-import 'package:flutter_rss/services/call_mail_sms_services.dart';
 import 'package:flutter_rss/provider/app_provider.dart';
+import 'package:flutter_rss/services/call_mail_sms_services.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -27,15 +27,6 @@ class _SplashPageState extends State<SplashPage> {
     Provider.of<AppInfoProvider>(context, listen: false).setTheme(colorKey);
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // 注册服务
-    setupLocator();
-    _initAsync();
-  }
-
   // 初始化语言
   _initLocale() {
     String language = SpUtil.getString(SpConstant.LANGUAGE);
@@ -46,11 +37,20 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // 注册服务
+    setupLocator();
+    _initAsync();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new SplashScreen(
       seconds: 2,
       navigateAfterSeconds: new HomePage(),
-      title: new Text('一款简洁的 RSS 阅读器',
+      title: new Text(S.of(context).appInfo,
           style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
       image: new Image.asset('assets/icon/logo.png', width: 100, height: 100),
       backgroundColor: Colors.white,

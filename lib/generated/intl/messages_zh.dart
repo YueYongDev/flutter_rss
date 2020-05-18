@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addIconText" : MessageLookupByLibrary.simpleMessage("添加"),
     "addRssSubscriptionDialogTitle" : MessageLookupByLibrary.simpleMessage("添加 RSS 订阅源"),
     "addSubscription" : MessageLookupByLibrary.simpleMessage("点击下方按钮添加开启订阅"),
+    "appInfo" : MessageLookupByLibrary.simpleMessage("一款简洁的 RSS 阅读器"),
     "appName" : MessageLookupByLibrary.simpleMessage("RSS 阅读器"),
     "cancel" : MessageLookupByLibrary.simpleMessage("取消"),
     "changeLanguage" : MessageLookupByLibrary.simpleMessage("切换语言"),

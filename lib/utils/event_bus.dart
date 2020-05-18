@@ -9,7 +9,7 @@ class EventBus {
   static EventBus _singleton = new EventBus._internal();
 
   //工厂构造函数
-  factory EventBus()=> _singleton;
+  factory EventBus() => _singleton;
 
   //保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
   var _emap = new Map<Object, List<EventCallback>>();

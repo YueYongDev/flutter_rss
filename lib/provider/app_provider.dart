@@ -23,8 +23,17 @@ Map<String, Color> themeColorMap = {
 
 class AppInfoProvider with ChangeNotifier {
   String _themeColor = '';
+  String _language = 'zh';
 
   String get themeColor => _themeColor;
+
+  String get language => _language;
+
+  setLocale(String language) {
+    _language = language;
+    notifyListeners();
+    SpUtil.putString(SpConstant.LANGUAGE, language);
+  }
 
   setTheme(String themeColor) {
     _themeColor = themeColor;
