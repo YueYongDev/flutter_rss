@@ -67,15 +67,16 @@ class _RssListState extends State<RssList> {
 
   // 判断当前rss信息是否在数据库中，如果不在，将其添加到数据库中
   saveFeed(var feed) async {
+    print(feed);
     Rss rss = new Rss();
     rss.title = feed.title;
     rss.url = this.widget.rss.url;
     if (feed.runtimeType.toString() == 'AtomFeed') {
-      rss.updateTime = feed.updated;
+      rss.updateTime = feed.updated.toString();
       rss.logo = feed.logo == null ? '' : feed.logo;
       rss.type = 'atom';
     } else if (feed.runtimeType.toString() == 'RssFeed') {
-      rss.updateTime = feed.lastBuildDate;
+      rss.updateTime = feed.lastBuildDate.toString();
       rss.logo = feed.image == null ? '' : feed.image.url;
       rss.type = 'rss';
     }
@@ -151,14 +152,14 @@ class _RssListState extends State<RssList> {
           String author = '';
           String content = '';
           if (type == 'RssItem') {
-            date = item.pubDate ?? "";
+            date = item.pubDate.toString() ?? "";
             url = item.link ?? "";
             content = item.description ?? "";
             author = item.author ?? '';
             date =
                 (date.contains("GMT")) ? CommonUtils.formatGMTTime(date) : "";
           } else if (type == 'AtomItem') {
-            date = item.published ?? '';
+            date = item.published.toString() ?? '';
             url = item.links[0].href ?? "";
             content = item.content;
             author = item.authors[0].name ?? "";

@@ -124,14 +124,7 @@ class PhotoViewSimpleScreen extends StatelessWidget {
   Future saveNetworkImageToPhoto(String url) async {
     if (Platform.isAndroid) {
       // 检查并请求权限
-      PermissionStatus status = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
-      if (PermissionStatus.granted != status) {
-        PermissionHandler().requestPermissions(<PermissionGroup>[
-          PermissionGroup.storage,
-        ]);
-      }
-      if (status == PermissionStatus.granted) {
+      if (await Permission.storage.request().isGranted) {
         return saveImageOnAndroidAndiOS(url);
       }
     } else if (Platform.isIOS) {

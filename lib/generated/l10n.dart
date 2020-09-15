@@ -8,8 +8,12 @@ import 'intl/messages_all.dart';
 // Made by Localizely
 // **************************************************************************
 
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+
 class S {
   S();
+  
+  static S current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -19,7 +23,9 @@ class S {
     final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return S();
+      S.current = S();
+      
+      return S.current;
     });
   } 
 
@@ -27,6 +33,7 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `RSS Reader`
   String get appName {
     return Intl.message(
       'RSS Reader',
@@ -36,6 +43,7 @@ class S {
     );
   }
 
+  /// `A Simple RSS Reader`
   String get appInfo {
     return Intl.message(
       'A Simple RSS Reader',
@@ -45,6 +53,7 @@ class S {
     );
   }
 
+  /// `{repoName} GitHub repository`
   String githubRepo(Object repoName) {
     return Intl.message(
       '$repoName GitHub repository',
@@ -54,6 +63,7 @@ class S {
     );
   }
 
+  /// `This application was built with flutter. To see the source code for this app, please visit the {repoLink}.`
   String aboutDialogDescription(Object repoLink) {
     return Intl.message(
       'This application was built with flutter. To see the source code for this app, please visit the $repoLink.',
@@ -63,6 +73,7 @@ class S {
     );
   }
 
+  /// `Contact Me 🙋`
   String get contactMe {
     return Intl.message(
       'Contact Me 🙋',
@@ -72,6 +83,7 @@ class S {
     );
   }
 
+  /// `Add`
   String get addIconText {
     return Intl.message(
       'Add',
@@ -81,6 +93,7 @@ class S {
     );
   }
 
+  /// `Click the button below to add and open a subscription`
   String get addSubscription {
     return Intl.message(
       'Click the button below to add and open a subscription',
@@ -90,6 +103,7 @@ class S {
     );
   }
 
+  /// `Refresh`
   String get refresh {
     return Intl.message(
       'Refresh',
@@ -99,6 +113,7 @@ class S {
     );
   }
 
+  /// `Update Subscription`
   String get edit {
     return Intl.message(
       'Update Subscription',
@@ -108,6 +123,7 @@ class S {
     );
   }
 
+  /// `Delete Subscription`
   String get delete {
     return Intl.message(
       'Delete Subscription',
@@ -117,6 +133,7 @@ class S {
     );
   }
 
+  /// `Language`
   String get changeLanguage {
     return Intl.message(
       'Language',
@@ -126,6 +143,7 @@ class S {
     );
   }
 
+  /// `Theme`
   String get changeTheme {
     return Intl.message(
       'Theme',
@@ -135,6 +153,7 @@ class S {
     );
   }
 
+  /// `Clear Cache`
   String get clearCache {
     return Intl.message(
       'Clear Cache',
@@ -144,6 +163,7 @@ class S {
     );
   }
 
+  /// `Setting`
   String get setting {
     return Intl.message(
       'Setting',
@@ -153,6 +173,7 @@ class S {
     );
   }
 
+  /// `Settings`
   String get moreSetting {
     return Intl.message(
       'Settings',
@@ -162,6 +183,7 @@ class S {
     );
   }
 
+  /// `About`
   String get aboutItem {
     return Intl.message(
       'About',
@@ -171,6 +193,7 @@ class S {
     );
   }
 
+  /// `Login`
   String get login {
     return Intl.message(
       'Login',
@@ -180,6 +203,7 @@ class S {
     );
   }
 
+  /// `Display after login`
   String get displayAfterLogin {
     return Intl.message(
       'Display after login',
@@ -189,6 +213,7 @@ class S {
     );
   }
 
+  /// `Features are not yet available`
   String get notAvailable {
     return Intl.message(
       'Features are not yet available',
@@ -198,6 +223,7 @@ class S {
     );
   }
 
+  /// `Paste`
   String get paste {
     return Intl.message(
       'Paste',
@@ -207,6 +233,7 @@ class S {
     );
   }
 
+  /// `Clear`
   String get clear {
     return Intl.message(
       'Clear',
@@ -216,6 +243,7 @@ class S {
     );
   }
 
+  /// `Recommend`
   String get recommend {
     return Intl.message(
       'Recommend',
@@ -225,6 +253,7 @@ class S {
     );
   }
 
+  /// `Add RSS Subscription`
   String get addRssSubscriptionDialogTitle {
     return Intl.message(
       'Add RSS Subscription',
@@ -234,6 +263,7 @@ class S {
     );
   }
 
+  /// `Update RSS Subscription`
   String get updateRssSubscriptionDialogTitle {
     return Intl.message(
       'Update RSS Subscription',
@@ -243,6 +273,7 @@ class S {
     );
   }
 
+  /// `Next`
   String get next {
     return Intl.message(
       'Next',
@@ -252,6 +283,7 @@ class S {
     );
   }
 
+  /// `Cancel`
   String get cancel {
     return Intl.message(
       'Cancel',
@@ -261,6 +293,7 @@ class S {
     );
   }
 
+  /// `Confirm`
   String get confirm {
     return Intl.message(
       'Confirm',
@@ -270,6 +303,7 @@ class S {
     );
   }
 
+  /// `Warning`
   String get warning {
     return Intl.message(
       'Warning',
@@ -279,6 +313,7 @@ class S {
     );
   }
 
+  /// `Illegal link`
   String get illegalLink {
     return Intl.message(
       'Illegal link',
@@ -288,6 +323,7 @@ class S {
     );
   }
 
+  /// `Feeds Address`
   String get feedsAddress {
     return Intl.message(
       'Feeds Address',
@@ -297,6 +333,7 @@ class S {
     );
   }
 
+  /// `Feedback`
   String get feedback {
     return Intl.message(
       'Feedback',
@@ -306,6 +343,7 @@ class S {
     );
   }
 
+  /// `Save`
   String get savePicture {
     return Intl.message(
       'Save',
@@ -315,6 +353,7 @@ class S {
     );
   }
 
+  /// `Success`
   String get savedSuccess {
     return Intl.message(
       'Success',

@@ -193,7 +193,7 @@ class _RssDetailState extends State<RssDetail> {
         item.content,
         webView: true,
         buildAsync: true,
-        factoryBuilder: (config) => _MyWidgetFactory(config),
+        factoryBuilder: () => _MyWidgetFactory(),
       );
     }
 
@@ -202,11 +202,11 @@ class _RssDetailState extends State<RssDetail> {
 }
 
 class _MyWidgetFactory extends WidgetFactory {
-  _MyWidgetFactory(HtmlConfig config) : super(config);
+  _MyWidgetFactory();
 
   @override
-  Widget buildImage(String url, {double height, String text, double width}) {
-    return new Container(child: RssDetailImage(url: url));
+  Widget buildImage(BuildMetadata meta, Object provider, ImageMetadata image) {
+    return new Container(child: RssDetailImage(url: image.sources.first.url));
   }
 }
 
