@@ -66,7 +66,7 @@ class MainScreen extends StatelessWidget {
           // Now there is no error if our width is less then 1340
           width >= 1100 ? enableSideMenu : Container(),
           width >= 650 ? enableRSSList : Container(),
-          enableRSSList
+          width < 650 ? enableRSSList : enableRSSDetail
         ],
       );
     });
