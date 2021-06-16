@@ -33,6 +33,7 @@ class SideMenu extends StatelessWidget {
               Row(
                 children: [
                   WebsafeSvg.asset("assets/Icons/Logo.svg", width: 48),
+                  SizedBox(width: 5),
                   Text("RSS 阅读器"),
                   Spacer(),
                   // We don't want to show this close button on Desktop mood
@@ -92,20 +93,50 @@ class SideMenu extends StatelessWidget {
                     bus.emit("refresh_rss");
                   }),
               SizedBox(height: kDefaultPadding * 1.5),
-              // Menu Items
-              SideMenuItem(
-                press: () {},
-                title: "已添加订阅",
-                iconSrc: "assets/Icons/Inbox.svg",
-                isActive: true,
-                itemCount: SpUtil.getStringList(kSPKeyRSSUrl).length,
+              ExpansionTile(
+                title: Text(
+                  "已添加订阅",
+                  style: Theme.of(context)
+                      .textTheme
+                      .button
+                      .copyWith(color: kTextColor),
+                ),
+                leading: WebsafeSvg.asset(
+                  "assets/Icons/Inbox.svg",
+                  height: 20,
+                  color: kPrimaryColor,
+                ),
+                initiallyExpanded: false,
+                //默认是否展开
+                children: <Widget>[
+                  SideMenuItem(
+                    press: () {},
+                    title: "设置",
+                    iconSrc: "assets/Icons/Settings.svg",
+                    isActive: false,
+                  ),
+                  SideMenuItem(
+                    press: () {},
+                    title: "设置",
+                    iconSrc: "assets/Icons/Settings.svg",
+                    isActive: false,
+                  ),
+                ],
               ),
+              // Menu Items
               // SideMenuItem(
               //   press: () {},
-              //   title: "Sent",
-              //   iconSrc: "assets/Icons/Send.svg",
-              //   isActive: false,
+              //   title: "已添加订阅",
+              //   iconSrc: "assets/Icons/Inbox.svg",
+              //   isActive: true,
+              //   itemCount: SpUtil.getStringList(kSPKeyRSSUrl).length,
               // ),
+              SideMenuItem(
+                press: () {},
+                title: "设置",
+                iconSrc: "assets/Icons/Settings.svg",
+                isActive: false,
+              ),
               // SideMenuItem(
               //   press: () {},
               //   title: "Drafts",

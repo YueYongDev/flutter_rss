@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rss/constants.dart';
 import 'package:flutter_rss/models/rss.dart';
 import 'package:flutter_rss/responsive.dart';
-import 'package:flutter_rss/screens/rss/fullscreen_detail.dart';
+import 'package:flutter_rss/page/rss/fullscreen_detail.dart';
 import 'package:get/get.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,7 +62,7 @@ class Header extends StatelessWidget {
           // ),
           Spacer(),
           // We don't need print option on mobile
-          if (Responsive.isDesktop(context))
+          if (GetPlatform.isDesktop)
             IconButton(
               icon: WebsafeSvg.asset(
                 "assets/Icons/Printer.svg",

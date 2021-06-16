@@ -1,9 +1,10 @@
 import 'package:flustars/flustars.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/constants.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/models/rss.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_rss/page/main/components/rss_content.dart';
 
 import 'components/header.dart';
 
@@ -31,22 +32,21 @@ class _RSSDetailState extends State<RSSDetail> {
     //监听滚动事件，打印滚动位置
     _controller.addListener(() {
       // print(_controller.offset); //打印滚动位置
-      if (_controller.offset < 1000 && showToTopBtn) {
-        setState(() {
-          showToTopBtn = false;
-        });
-      } else if (_controller.offset >= 1000 && showToTopBtn == false) {
-        setState(() {
-          showToTopBtn = true;
-        });
-      }
+      // todo 做一个局部刷新
+      // if (_controller.offset < 1000 && showToTopBtn) {
+      //   setState(() {
+      //     showToTopBtn = false;
+      //   });
+      // } else if (_controller.offset >= 1000 && showToTopBtn == false) {
+      //   setState(() {
+      //     showToTopBtn = true;
+      //   });
+      // }
     });
     bus.on("open_rss_content", (arg) {
       setState(() {
         _item = arg;
       });
-      // 切换时需把详情页重置为最顶部
-      _controller.jumpTo(.0);
     });
   }
 
@@ -129,30 +129,7 @@ class _RSSDetailState extends State<RSSDetail> {
                             ],
                           ),
                         ),
-                        HtmlWidget(
-                          // todo 修改初始界面
-                          _item?.content ??
-                              kDefaultHtml,
-                          // all other parameters are optional, a few notable params:
-
-                          // specify custom styling for an element
-                          // see supported inline styling below
-                          customStylesBuilder: (element) {
-                            if (element.classes.contains('foo')) {
-                              return {'color': 'red'};
-                            }
-
-                            return null;
-                          },
-
-                          // set the default styling for text
-                          textStyle: TextStyle(
-                              fontSize: 15, height: 1.7, color: kTextColor),
-                          hyperlinkColor: kBadgeColor,
-                          // turn on `webView` if you need IFRAME support
-                          webView: true,
-                          buildAsync: true,
-                        )
+                        RSSContent(item: _item)
                       ],
                     )),
               )

@@ -28,6 +28,8 @@ class SideMenuItem extends StatelessWidget {
       child: InkWell(
         onTap: press,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             (isActive || isHover)
                 ? WebsafeSvg.asset(

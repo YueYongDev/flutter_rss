@@ -2,7 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_rss/screens/main/main_screen.dart';
+import 'package:flutter_rss/page/main/main_screen.dart';
 import 'package:flutter_rss/utils/event_bus.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +14,7 @@ void main() async {
   runApp(MyApp());
   if (GetPlatform.isDesktop) {
     doWhenWindowReady(() {
-      final initialSize = Size(900, 600);
+      final initialSize = Size(1200, 800);
       appWindow.minSize = initialSize;
       appWindow.size = initialSize;
       appWindow.alignment = Alignment.center;

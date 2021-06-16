@@ -2,7 +2,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/components/side_menu.dart';
 import 'package:flutter_rss/constants.dart';
-import 'package:flutter_rss/screens/rss/rss_detail.dart';
+import 'package:flutter_rss/page/rss/rss_detail.dart';
 import 'package:get/get.dart';
 
 import 'components/list_of_rss.dart';
@@ -20,9 +20,7 @@ class MainScreen extends StatelessWidget {
           color: kBgLightColor,
           child: Column(
             children: [
-              GetPlatform.isDesktop
-                  ? WindowTitleBarBox(child: MoveWindow())
-                  : Container(),
+              if (GetPlatform.isDesktop) WindowTitleBarBox(child: MoveWindow()),
               Expanded(child: SideMenu())
             ],
           ),
@@ -36,9 +34,7 @@ class MainScreen extends StatelessWidget {
           color: kBgDarkColor,
           child: Column(
             children: [
-              GetPlatform.isDesktop
-                  ? WindowTitleBarBox(child: MoveWindow())
-                  : Container(),
+              if (GetPlatform.isDesktop) WindowTitleBarBox(child: MoveWindow()),
               Expanded(child: ListOfRSS())
             ],
           ),
@@ -51,9 +47,7 @@ class MainScreen extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: [
-              GetPlatform.isDesktop
-                  ? WindowTitleBarBox(child: MoveWindow())
-                  : Container(),
+              if (GetPlatform.isDesktop) WindowTitleBarBox(child: MoveWindow()),
               Expanded(child: RSSDetail())
             ],
           ),

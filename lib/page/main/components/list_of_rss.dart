@@ -7,8 +7,8 @@ import 'package:flutter_rss/constants.dart';
 import 'package:flutter_rss/main.dart';
 import 'package:flutter_rss/models/rss.dart';
 import 'package:flutter_rss/responsive.dart';
-import 'package:flutter_rss/screens/main/components/rss_card.dart';
-import 'package:flutter_rss/screens/rss/rss_detail.dart';
+import 'package:flutter_rss/page/main/components/rss_card.dart';
+import 'package:flutter_rss/page/rss/rss_detail.dart';
 import 'package:flutter_rss/services/rss_service.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
@@ -22,8 +22,11 @@ class ListOfRSS extends StatefulWidget {
   _ListOfRSSState createState() => _ListOfRSSState();
 }
 
-class _ListOfRSSState extends State<ListOfRSS> {
+class _ListOfRSSState extends State<ListOfRSS>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  AnimationController _controller;
 
   List<RSSItem> rss_items = [];
 
@@ -34,12 +37,22 @@ class _ListOfRSSState extends State<ListOfRSS> {
 
   @override
   void initState() {
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+
     super.initState();
     getRSS();
 
     bus.on("refresh_rss", (arg) {
       getRSS();
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -110,18 +123,26 @@ class _ListOfRSSState extends State<ListOfRSS> {
             ),
           ),
           Spacer(),
-          MaterialButton(
-            minWidth: 20,
-            onPressed: () => bus.emit("refresh_rss"),
-            child: WebsafeSvg.asset(
-              "assets/Icons/Refresh.svg",
-              width: 16,
+          // 点击刷新按钮时的旋转动画
+          RotationTransition(
+            turns: Tween(begin: 0.0, end: 4.0).animate(_controller),
+            child: MaterialButton(
+              minWidth: 20,
+              onPressed: () {
+                bus.emit("refresh_rss");
+                _controller.forward();
+              },
+              child: WebsafeSvg.asset(
+                "assets/Icons/Refresh.svg",
+                width: 16,
+              ),
             ),
           ),
         ],
       ),
     );
     Widget rssList = Expanded(
+        // todo 换成ios风格的下拉刷新  CupertinoSliverRefreshControl
         child: RefreshIndicator(
       onRefresh: () => getRSS(type: "pull_down"),
       child: isLoading
@@ -192,5 +213,6 @@ class _ListOfRSSState extends State<ListOfRSS> {
       });
     }
     EasyLoading.showSuccess("订阅已更新");
+    _controller.reset();
   }
 }

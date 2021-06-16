@@ -1,13 +1,13 @@
 import 'package:flustars/flustars.dart';
 import 'package:webfeed/webfeed.dart';
 
-class RSS {
+class RSSInfo {
   int id;
   String title, url, type, logo, body, updateTime;
 
   //bool isChecked;
 
-  RSS(
+  RSSInfo(
       {this.id,
       this.title,
       this.url,
@@ -28,7 +28,7 @@ class RSS {
     };
   }
 
-  RSS.fromMap(Map<String, dynamic> map) {
+  RSSInfo.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     title = map['title'];
     url = map['url'];
@@ -75,7 +75,6 @@ class RSSItem {
     content = item.content;
     time = item.published;
     author = item.authors.first.name;
-
   }
 
   RSSItem.fromRssFeed(RssItem item) {

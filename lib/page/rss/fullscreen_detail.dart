@@ -1,7 +1,9 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rss/constants.dart';
 import 'package:flutter_rss/models/rss.dart';
+import 'package:flutter_rss/page/main/components/rss_content.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +17,9 @@ class FullScreenDetail extends StatelessWidget {
     return Scaffold(
         body: Column(
       children: [
-        WindowTitleBarBox(child: MoveWindow()),
+        GetPlatform.isDesktop
+            ? WindowTitleBarBox(child: MoveWindow())
+            : Container(),
         AppBar(
           backgroundColor: Colors.transparent,
           title:
@@ -35,16 +39,7 @@ class FullScreenDetail extends StatelessWidget {
             child: SingleChildScrollView(
                 child: Padding(
           padding: EdgeInsets.all(kDefaultPadding),
-          child: HtmlWidget(
-            // todo 修改初始界面
-            rssItem?.content ?? kDefaultHtml,
-            // set the default styling for text
-            textStyle: TextStyle(fontSize: 15, height: 1.7, color: kTextColor),
-            hyperlinkColor: kBadgeColor,
-            // turn on `webView` if you need IFRAME support
-            webView: true,
-            buildAsync: true,
-          ),
+          child: RSSContent(item: rssItem),
         )))
       ],
     ));
