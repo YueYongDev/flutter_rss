@@ -5,15 +5,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rss/components/side_menu.dart';
 import 'package:flutter_rss/constants.dart';
 import 'package:flutter_rss/main.dart';
-import 'package:flutter_rss/models/rss.dart';
-import 'package:flutter_rss/responsive.dart';
 import 'package:flutter_rss/page/main/components/rss_card.dart';
 import 'package:flutter_rss/page/rss/rss_detail.dart';
-import 'package:flutter_rss/services/rss_service.dart';
+import 'package:flutter_rss/responsive.dart';
+import 'package:flutter_rss/services/rss_controller.dart';
+import 'package:get/get.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
 class ListOfRSS extends StatefulWidget {
-  // Press "Command + ."
   const ListOfRSS({
     Key key,
   }) : super(key: key);
@@ -28,8 +27,6 @@ class _ListOfRSSState extends State<ListOfRSS>
 
   AnimationController _controller;
 
-  List<RSSItem> rss_items = [];
-
   bool isLoading = false;
 
   // 点击的是那个item
@@ -41,16 +38,12 @@ class _ListOfRSSState extends State<ListOfRSS>
         AnimationController(vsync: this, duration: Duration(seconds: 2));
 
     super.initState();
-    getRSS();
 
-    bus.on("refresh_rss", (arg) {
-      getRSS();
-    });
+    bus.on("refresh_rss", (arg) => getData());
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }
@@ -61,15 +54,10 @@ class _ListOfRSSState extends State<ListOfRSS>
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Row(
         children: [
-          // Once user click the menu icon the menu shows like drawer
-          // Also we want to hide this menu icon on desktop
           if (!Responsive.isDesktop(context))
             IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                _scaffoldKey.currentState.openDrawer();
-              },
-            ),
+                icon: Icon(Icons.menu),
+                onPressed: () => _scaffoldKey.currentState.openDrawer()),
           if (!Responsive.isDesktop(context)) SizedBox(width: 5),
           Expanded(
             child: TextField(
@@ -80,10 +68,7 @@ class _ListOfRSSState extends State<ListOfRSS>
                 filled: true,
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(kDefaultPadding * 0.75), //15
-                  child: WebsafeSvg.asset(
-                    "assets/Icons/Search.svg",
-                    width: 24,
-                  ),
+                  child: WebsafeSvg.asset("assets/Icons/Search.svg", width: 24),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -104,6 +89,7 @@ class _ListOfRSSState extends State<ListOfRSS>
           InkWell(
             onTap: () {
               print("排序");
+              RSSController.to.sortByTime();
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,37 +127,54 @@ class _ListOfRSSState extends State<ListOfRSS>
         ],
       ),
     );
+
+    Widget _buildHomePageWhenNoRss() {
+      return new Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Image.asset("assets/images/Flower.png", width: 80),
+            new Container(height: 30),
+            new Text("点击左侧菜单添加订阅"),
+            new SizedBox(height: 5),
+          ],
+        ),
+      );
+    }
+
     Widget rssList = Expanded(
-        // todo 换成ios风格的下拉刷新  CupertinoSliverRefreshControl
         child: RefreshIndicator(
-      onRefresh: () => getRSS(type: "pull_down"),
-      child: isLoading
-          ? Center(child: CupertinoActivityIndicator())
-          : ListView.builder(
-              controller: ScrollController(),
-              itemCount: this.rss_items.length,
-              // On mobile this active dosen't mean anything
-              itemBuilder: (context, index) => RSSCard(
-                isActive: Responsive.isMobile(context) ? false : index == click,
-                rssItem: this.rss_items[index],
-                press: () {
-                  if (Responsive.isMobile(context)) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RSSDetail(rssItem: this.rss_items[index]),
-                          fullscreenDialog: true),
-                    );
-                  } else {
-                    setState(() {
-                      click = index;
-                    });
-                    bus.emit("open_rss_content", this.rss_items[index]);
-                  }
-                },
-              ),
-            ),
+      onRefresh: () => getData(type: "pull_down"),
+      child: GetBuilder<RSSController>(
+          init: RSSController(),
+          builder: (v) => v.rssItemList.length == 0
+              ? Center(
+                  child: isLoading
+                      ? CupertinoActivityIndicator()
+                      : _buildHomePageWhenNoRss())
+              : ListView.builder(
+                  controller: ScrollController(),
+                  itemCount: v.rssItemList.length,
+                  itemBuilder: (context, index) => RSSCard(
+                    isActive:
+                        Responsive.isMobile(context) ? false : index == click,
+                    rssItem: v.rssItemList[index],
+                    press: () {
+                      if (Responsive.isMobile(context)) {
+                        Get.to(() => RSSDetail(rssItem: v.rssItemList[index]),
+                            fullscreenDialog: true);
+                      } else {
+                        setState(() {
+                          click = index;
+                        });
+                        bus.emit("open_rss_content", v.rssItemList[index]);
+                      }
+                    },
+                  ),
+                )),
     ));
 
     return Scaffold(
@@ -200,18 +203,12 @@ class _ListOfRSSState extends State<ListOfRSS>
     );
   }
 
-  getRSS({type}) async {
-    if (mounted) setState(() => rss_items.clear());
+  getData({type}) async {
     if (type != "pull_down") {
       if (mounted) setState(() => isLoading = true);
     }
-    List<RSSItem> list = await RSSService.getRSS();
-    if (mounted) {
-      setState(() {
-        this.rss_items = list;
-        isLoading = false;
-      });
-    }
+    await RSSController.to.getRSSInfoList();
+    if (mounted) setState(() => isLoading = false);
     EasyLoading.showSuccess("订阅已更新");
     _controller.reset();
   }

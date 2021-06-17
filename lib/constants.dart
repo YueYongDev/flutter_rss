@@ -23,4 +23,5 @@ const kDefaultHtml = '''
 <!-- anything goes here -->
 ''';
 
-const kSPKeyRSSUrl = "rss_url";
+const kSPKeyRSSUrl = "rss_url_list";
+const kSPKeyRSSInfo = "rss_info_list";

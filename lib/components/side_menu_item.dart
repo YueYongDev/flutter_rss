@@ -31,13 +31,7 @@ class SideMenuItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            (isActive || isHover)
-                ? WebsafeSvg.asset(
-                    "assets/Icons/Angle right.svg",
-                    width: 15,
-                  )
-                : SizedBox(width: 15),
-            SizedBox(width: kDefaultPadding / 4),
+            SizedBox(width: 15 + kDefaultPadding / 4),
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(bottom: 15, right: 5),
